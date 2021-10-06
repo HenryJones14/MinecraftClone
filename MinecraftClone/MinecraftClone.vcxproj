@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\OpenSimplexNoise\OpenSimplexNoise.h" />
     <ClInclude Include="src\main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\OpenSimplexNoise\OpenSimplexNoise.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
