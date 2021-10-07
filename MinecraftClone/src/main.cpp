@@ -6,9 +6,11 @@
 int main(void)
 {
     OpenSimplexNoise::Noise noise = OpenSimplexNoise::Noise(100);
-    float value = 0;
     float time = 0;
-    const float TileSize = 0.0015625f;
+    const float TileSize = 0.0015625f * 25;
+
+    float newValue = 0;
+    float oldValue;
 
     GLFWwindow* window;
 
@@ -37,18 +39,23 @@ int main(void)
 
         /* Create a triangle with legacy OpenGL */
         glBegin(GL_TRIANGLES);
-        for (float i = -1; i < 1; i += TileSize)
+
+        newValue = (float)noise.eval(time - 1 - TileSize, 0);
+        for (float i = -1.0f; i < 1.0f; i += TileSize)
         {
-            value = abs((float)noise.eval(time + i, 0)) * 2 - 1;
+            oldValue = newValue;
+            //newValue = abs((float)noise.eval(time + i, 0)) * 2 - 1; // <- Mountains
+            newValue = (float)noise.eval(time + i, 0); // <- Smooth
 
             glVertex2f(i, -1.0f);
-            glVertex2f(i, value);
+            glVertex2f(i, oldValue);
             glVertex2f(i + TileSize, -1.0f);
 
-            glVertex2f(i, value);
-            glVertex2f(i + TileSize, value);
+            glVertex2f(i, oldValue);
+            glVertex2f(i + TileSize, newValue);
             glVertex2f(i + TileSize, -1.0f);
         }
+
         glEnd();
 
 
