@@ -7,8 +7,15 @@
 float vertices[] =
 {
     -0.7f, -0.7f, 0.0f,
-     0.0f,  0.7f, 0.0f,
+    -0.7f,  0.7f, 0.0f,
+     0.7f,  0.7f, 0.0f,
      0.7f, -0.7f, 0.0f,
+};
+
+int triangles[] =
+{
+    0, 1, 2,
+    2, 3, 0,
 };
 
 const char* vertexShaderSource = "#version 330 core\n"
@@ -28,6 +35,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 int success;
 unsigned int VBO;
 unsigned int VAO;
+unsigned int EBO;
 unsigned int shaderProgram;
 
 void CustomOpenGL()
@@ -87,12 +95,23 @@ void CustomOpenGL()
     // Create ID for and generate "VertexArrayObject" (VAO) (this is a renderable object with the same shaders)
     glGenVertexArrays(1, &VAO);
 
-    // Initialize VAO for use as renderable object
-    glBindVertexArray(VAO);
+    // ?
+    glGenBuffers(1, &EBO);
+
+
 
     // Set type of VBO to accept verticies and send that vertex data to GPU with binded FBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Initialize VAO for use as renderable object
+    glBindVertexArray(VAO);
+
+    // ?
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triangles), triangles, GL_STATIC_DRAW);
+
+
 
     // Show OpenGL how to place the vertex data into the shader
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -146,9 +165,9 @@ int main(void)
 
         // render Triangle
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        vertices[0] = vertices[0] += 0.1f;
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
