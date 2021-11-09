@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="noise\SimplexNoise.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="src\MainGame.cs" />
     <Compile Include="src\ShaderManager.cs" />
