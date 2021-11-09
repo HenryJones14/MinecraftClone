@@ -9,15 +9,12 @@ namespace MinecraftClone
 {
     public class MainGame : GameWindow
     {
-        float[] vertices = {
-            -0.5f, -0.5f, 0.0f, //Bottom-left vertex
-            0.5f, -0.5f, 0.0f, //Bottom-right vertex
-            0.0f,  0.5f, 0.0f  //Top vertex
-        };
-
         int VertexBufferObject;
         int VertexArrayObject;
+        int ElementBufferObject;
+
         Shader MainShader;
+        Mesh MainMesh = new Mesh();
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -32,8 +29,11 @@ namespace MinecraftClone
 
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, MainMesh.vertices.Length * sizeof(float), MainMesh.vertices, BufferUsageHint.StaticDraw);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            ElementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, MainMesh.indices.Length * sizeof(uint), MainMesh.indices, BufferUsageHint.StaticDraw);
 
             MainShader = new Shader("shaders/shader.vert", "shaders/shader.frag");
             MainShader.Use();
@@ -41,10 +41,11 @@ namespace MinecraftClone
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             base.OnLoad(e);
         }
@@ -54,8 +55,9 @@ namespace MinecraftClone
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             MainShader.Use();
+
             GL.BindVertexArray(VertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            GL.DrawElements(PrimitiveType.Triangles, MainMesh.indices.Length, DrawElementsType.UnsignedInt, 0);
 
             Context.SwapBuffers();
 
