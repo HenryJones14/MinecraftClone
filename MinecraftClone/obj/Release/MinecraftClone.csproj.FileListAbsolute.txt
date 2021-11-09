@@ -1,0 +1,11 @@
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\MinecraftClone.exe.config
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\MinecraftClone.exe
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\MinecraftClone.pdb
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\OpenTK.dll
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\OpenTK.pdb
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Release\OpenTK.xml
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Release\MinecraftClone.csproj.AssemblyReference.cache
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Release\MinecraftClone.csproj.CoreCompileInputs.cache
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Release\MinecraftClone.csproj.CopyComplete
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Release\MinecraftClone.exe
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Release\MinecraftClone.pdb

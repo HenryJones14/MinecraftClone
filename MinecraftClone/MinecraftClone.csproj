@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0806A5CB-45F7-40B5-95F4-563C2D04F115}</ProjectGuid>
+    <ProjectGuid>{EBD40099-D6FC-421F-ADB4-1FB3E509633C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MinecraftClone</RootNamespace>
     <AssemblyName>MinecraftClone</AssemblyName>
@@ -34,9 +34,20 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+    <None Include="shaders\shader.frag" />
+    <None Include="shaders\shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=3.3.2.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.3.2\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="src\MainGame.cs" />
+    <Compile Include="src\ShaderManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

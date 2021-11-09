@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftClone", "MinecraftClone\MinecraftClone.csproj", "{0806A5CB-45F7-40B5-95F4-563C2D04F115}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftClone", "MinecraftClone\MinecraftClone.csproj", "{EBD40099-D6FC-421F-ADB4-1FB3E509633C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0806A5CB-45F7-40B5-95F4-563C2D04F115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0806A5CB-45F7-40B5-95F4-563C2D04F115}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0806A5CB-45F7-40B5-95F4-563C2D04F115}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0806A5CB-45F7-40B5-95F4-563C2D04F115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD40099-D6FC-421F-ADB4-1FB3E509633C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD40099-D6FC-421F-ADB4-1FB3E509633C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD40099-D6FC-421F-ADB4-1FB3E509633C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD40099-D6FC-421F-ADB4-1FB3E509633C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FC32AB7C-A345-4A68-A05D-DB73E8716430}
+		SolutionGuid = {86DAFED8-99B8-4CED-9441-7C81E14CBC3A}
 	EndGlobalSection
 EndGlobal
