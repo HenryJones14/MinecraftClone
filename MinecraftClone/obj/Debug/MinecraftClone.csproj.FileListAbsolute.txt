@@ -9,3 +9,16 @@ C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\OpenTK.x
 C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.csproj.CopyComplete
 C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.exe
 C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.pdb
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\MinecraftClone.exe.config
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\MinecraftClone.exe
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\MinecraftClone.pdb
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\OpenTK.dll
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\OpenTK.pdb
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\OpenTK.xml
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.csproj.AssemblyReference.cache
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.csproj.CoreCompileInputs.cache
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.csproj.CopyComplete
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.exe
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\obj\Debug\MinecraftClone.pdb
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\shaders\shader.frag
+C:\Users\HenryJones14\Documents\GitHub\MinecraftClone\MinecraftClone\bin\Debug\shaders\shader.vert

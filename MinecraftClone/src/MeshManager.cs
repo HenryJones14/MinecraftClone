@@ -10,6 +10,7 @@ namespace MinecraftClone
     {
         public float[] vertices;
         public uint[] indices;
+        public float[] uvs;
 
         public Mesh()
         {
@@ -48,6 +49,19 @@ namespace MinecraftClone
 
                 2, 6, 5,    // down first triangle
                 2, 1, 6,    // down second triangle*/
+            };
+
+            uvs = new float[8*2]
+            {
+                0f, 1f,
+                1f, 0f,
+                0f, 0f,
+                1f, 1f,
+
+                0f, 1f,
+                1f, 0f,
+                0f, 0f,
+                1f, 1f,
             };
         }
 
