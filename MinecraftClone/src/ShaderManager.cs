@@ -56,6 +56,8 @@ namespace MinecraftClone
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
+
+            Use();
         }
 
         // Use shader

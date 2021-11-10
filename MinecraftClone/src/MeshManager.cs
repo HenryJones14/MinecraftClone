@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+
 namespace MinecraftClone
 {
     public class Mesh
@@ -14,7 +19,7 @@ namespace MinecraftClone
 
         public Mesh()
         {
-            vertices = new float[8*3]
+            vertices = new float[8 * 3]
             {
                                       // front:
                  0.5f,  0.5f,  0.5f,  // top left
@@ -29,8 +34,7 @@ namespace MinecraftClone
                  0.5f,  0.5f, -0.5f,  // top right
 
             };
-
-            indices = new uint[12*3]
+            indices = new uint[12 * 3]
             {
                 0, 1, 2,    // front first triangle
                 0, 3, 1,    // front second triangle
@@ -50,8 +54,7 @@ namespace MinecraftClone
                 2, 6, 5,    // down first triangle
                 2, 1, 6,    // down second triangle*/
             };
-
-            uvs = new float[8*2]
+            uvs = new float[8 * 2]
             {
                 0f, 1f,
                 1f, 0f,
@@ -63,12 +66,51 @@ namespace MinecraftClone
                 0f, 0f,
                 1f, 1f,
             };
+
+            InitializeMesh();
         }
 
-        public Mesh(float[] Vertices, uint[] Indices)
+        public Mesh(float[] Vertices, uint[] Indices, float[] UVs)
         {
             vertices = Vertices;
             indices = Indices;
+            uvs = UVs;
+
+            InitializeMesh();
         }
+
+        #region Rendering
+
+        public int VertexArrayObject;
+        private int VertexBufferObject;
+        private int ElementBufferObject;
+
+        public void RenderMesh(Shader ShaderToUse)
+        {
+            GL.BindVertexArray(VertexArrayObject);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(0);
+        }
+
+        private void InitializeMesh()
+        {
+            VertexArrayObject = GL.GenVertexArray();
+            VertexBufferObject = GL.GenBuffer();
+            ElementBufferObject = GL.GenBuffer();
+
+            GL.BindVertexArray(VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+
+            GL.BindVertexArray(0);
+        }
+
+        #endregion
     }
 }
