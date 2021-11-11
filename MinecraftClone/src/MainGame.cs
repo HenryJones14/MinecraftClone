@@ -24,6 +24,8 @@ namespace MinecraftClone
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
+            GL.Enable(EnableCap.DepthTest);
+            //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 
             MainMesh = new Mesh();
             MainShader = new Shader("shaders/shader.vert", "shaders/shader.frag");
@@ -35,17 +37,35 @@ namespace MinecraftClone
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             MainShader.Use();
-            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(time)));
-            MainShader.SetMatrix4x4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f));
-            MainShader.SetMatrix4x4("projection", Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Width / Height, 0.1f, 100.0f));
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
+            MainShader.SetMatrix4x4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -time * 0.01f));
+            MainShader.SetMatrix4x4("projection", Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90.0f), Width / Height, 0.1f, 100.0f));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(-time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(1, 0, 0));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(-1, 0, 0));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(-time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 1, 0));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, -1, 0));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationZ((float)MathHelper.DegreesToRadians(-time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, 1));
+            MainMesh.RenderMesh();
+
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationZ((float)MathHelper.DegreesToRadians(time)) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, -1));
             MainMesh.RenderMesh();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
-            time++;
+            time += 0.2f;
         }
 
         protected override void OnUnload(EventArgs e)

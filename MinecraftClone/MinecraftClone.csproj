@@ -55,5 +55,9 @@
     <Compile Include="src\MeshManager.cs" />
     <Compile Include="src\ShaderManager.cs" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="textures\UV.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

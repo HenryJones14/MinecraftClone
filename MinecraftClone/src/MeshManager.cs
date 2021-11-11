@@ -21,6 +21,7 @@ namespace MinecraftClone
         public Mesh()
         {
             vertexcount = 8;
+
             vertices = new float[8 * 3]
             {
                                       // front:
@@ -36,6 +37,7 @@ namespace MinecraftClone
                  0.5f,  0.5f, -0.5f,  // top right
 
             };
+
             indices = new uint[12 * 3]
             {
                 0, 1, 2,    // front first triangle
@@ -56,6 +58,7 @@ namespace MinecraftClone
                 2, 6, 5,    // down first triangle
                 2, 1, 6,    // down second triangle*/
             };
+
             uvs = new float[8 * 2]
             {
                 0f, 1f,
@@ -112,14 +115,14 @@ namespace MinecraftClone
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
             GL.BindVertexArray(0);
         }
 
         private int GetMemorySize()
         {
-            return vertices.Length * sizeof(float);
+            return GetMemoryInfo().Length * sizeof(float);
         }
 
         private float[] GetMemoryInfo()
@@ -135,6 +138,14 @@ namespace MinecraftClone
                 info.Add(uvs[i * 2 + 0]);
                 info.Add(uvs[i * 2 + 1]);
             }
+
+            Console.WriteLine("Model:");
+            Console.WriteLine("{");
+            for (int i = 0; i < info.Count; i++)
+            {
+                Console.WriteLine(info[i]);
+            }
+            Console.WriteLine("}");
 
             return info.ToArray();
         }
