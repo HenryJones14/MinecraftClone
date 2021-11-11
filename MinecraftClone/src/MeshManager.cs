@@ -13,12 +13,14 @@ namespace MinecraftClone
 {
     public class Mesh
     {
+        public int vertexcount;
         public float[] vertices;
         public uint[] indices;
         public float[] uvs;
 
         public Mesh()
         {
+            vertexcount = 8;
             vertices = new float[8 * 3]
             {
                                       // front:
@@ -70,8 +72,9 @@ namespace MinecraftClone
             InitializeMesh();
         }
 
-        public Mesh(float[] Vertices, uint[] Indices, float[] UVs)
+        public Mesh(int VertexCount, float[] Vertices, uint[] Indices, float[] UVs)
         {
+            vertexcount = VertexCount;
             vertices = Vertices;
             indices = Indices;
             uvs = UVs;
@@ -85,7 +88,7 @@ namespace MinecraftClone
         private int VertexBufferObject;
         private int ElementBufferObject;
 
-        public void RenderMesh(Shader ShaderToUse)
+        public void RenderMesh()
         {
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
@@ -100,15 +103,40 @@ namespace MinecraftClone
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, GetMemorySize(), GetMemoryInfo(), BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 
             GL.BindVertexArray(0);
+        }
+
+        private int GetMemorySize()
+        {
+            return vertices.Length * sizeof(float);
+        }
+
+        private float[] GetMemoryInfo()
+        {
+            List<float> info = new List<float>();
+
+            for (int i = 0; i < vertexcount; i++)
+            {
+                info.Add(vertices[i * 3 + 0]);
+                info.Add(vertices[i * 3 + 1]);
+                info.Add(vertices[i * 3 + 2]);
+
+                info.Add(uvs[i * 2 + 0]);
+                info.Add(uvs[i * 2 + 1]);
+            }
+
+            return info.ToArray();
         }
 
         #endregion

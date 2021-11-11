@@ -1,10 +1,14 @@
 ﻿#version 330 core
-layout (location = 0) in vec3 aPosition;
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 uvs;
 
-out vec4 vertexColor;
+out vec2 uv;
+uniform mat4 transform;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
-    vertexColor = vec4(aPosition.x + 0.5f, aPosition.y + 0.5f, aPosition.z + 0.5f, 1.0);
-    gl_Position = vec4(aPosition, 1.0);
+    uv = uvs;
+    gl_Position = vec4(pos, 1.0f) * transform * view * projection;
 }

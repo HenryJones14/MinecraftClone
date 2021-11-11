@@ -9,13 +9,8 @@ namespace MinecraftClone
 {
     public class MainGame : GameWindow
     {
-        int VertexBufferObject;
-        int VertexArrayObject;
-        int ElementBufferObject;
-
         Shader MainShader;
         Mesh MainMesh;
-        Mesh mesh;
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -27,6 +22,8 @@ namespace MinecraftClone
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Back);
 
             MainMesh = new Mesh();
             MainShader = new Shader("shaders/shader.vert", "shaders/shader.frag");
@@ -34,15 +31,21 @@ namespace MinecraftClone
             base.OnLoad(e);
         }
 
+        float time = 0;
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             MainShader.Use();
-            MainMesh.RenderMesh(MainShader);
+            MainShader.SetMatrix4x4("transform", Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(time)));
+            MainShader.SetMatrix4x4("view", Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f));
+            MainShader.SetMatrix4x4("projection", Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Width / Height, 0.1f, 100.0f));
+            MainMesh.RenderMesh();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
+            time++;
         }
 
         protected override void OnUnload(EventArgs e)

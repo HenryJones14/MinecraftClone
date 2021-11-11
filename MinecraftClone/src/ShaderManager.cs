@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
+using OpenTK;
 
 namespace MinecraftClone
 {
@@ -56,14 +57,17 @@ namespace MinecraftClone
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
-
-            Use();
         }
 
         // Use shader
         public void Use()
         {
             GL.UseProgram(Handle);
+        }
+
+        public void SetMatrix4x4(string ValueName, Matrix4 Matrix)
+        {
+            GL.UniformMatrix4(GL.GetUniformLocation(Handle, ValueName), true, ref Matrix);
         }
 
         // Destroy shader
