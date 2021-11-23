@@ -59,7 +59,6 @@ namespace MinecraftClone
             GL.DeleteShader(VertexShader);
         }
 
-        // Use shader
         public void Use()
         {
             GL.UseProgram(Handle);
@@ -68,6 +67,11 @@ namespace MinecraftClone
         public void SetMatrix4x4(string ValueName, Matrix4 Matrix)
         {
             GL.UniformMatrix4(GL.GetUniformLocation(Handle, ValueName), true, ref Matrix);
+        }
+
+        public void SetVector3(string ValueName, Vector3 Vector)
+        {
+            GL.Uniform3(GL.GetUniformLocation(Handle, ValueName), ref Vector);
         }
 
         // Destroy shader
