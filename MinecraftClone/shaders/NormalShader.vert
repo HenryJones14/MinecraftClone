@@ -13,6 +13,6 @@ uniform mat4 projection;
 void main()
 {
     gl_Position = vec4(pos, 1.0f) * local * world * projection;
-    normal = nor;
+    normal = normalize(nor);
     uvpos = uvs;
 }
