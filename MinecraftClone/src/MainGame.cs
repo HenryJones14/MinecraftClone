@@ -160,76 +160,55 @@ namespace MinecraftClone
 
             if (input.IsKeyDown(Key.W))
             {
-                MainCamera.position -= MainCamera.forward * (float)e.Time * speed;
+                MainCamera.Move(0, 0, (float)e.Time * speed);
             }
 
             if (input.IsKeyDown(Key.S))
             {
-                MainCamera.position -= -MainCamera.forward * (float)e.Time * speed;
+                MainCamera.Move(0, 0, (float)e.Time * -speed);
             }
 
             if (input.IsKeyDown(Key.D))
             {
-                MainCamera.position += MainCamera.right * (float)e.Time * speed;
+                MainCamera.Move((float)e.Time * speed, 0, 0);
             }
 
             if (input.IsKeyDown(Key.A))
             {
-                MainCamera.position += -MainCamera.right * (float)e.Time * speed;
+                MainCamera.Move((float)e.Time * -speed, 0, 0);
             }
 
             if (input.IsKeyDown(Key.Space))
             {
-                MainCamera.position += MainCamera.upward * (float)e.Time * speed;
+                MainCamera.Move(0, (float)e.Time * speed, 0);
             }
 
             if (input.IsKeyDown(Key.LShift))
             {
-                MainCamera.position += -MainCamera.upward * (float)e.Time * speed;
+                MainCamera.Move(0, (float)e.Time * -speed, 0);
             }
 
-            /*if (input.IsKeyDown(Key.Right))
+            if (input.IsKeyDown(Key.Right))
             {
-                MainCamera.Rotation *= Quaternion.FromEulerAngles(0, 1 * (float)e.Time, 0);
+                MainCamera.Rotate((float)e.Time * 90, 0);
             }
 
             if (input.IsKeyDown(Key.Left))
             {
-                MainCamera.Rotation *= Quaternion.FromEulerAngles(0, -1 * (float)e.Time, 0);
+                MainCamera.Rotate((float)e.Time * -90, 0);
             }
 
             if (input.IsKeyDown(Key.Up))
             {
-                MainCamera.Rotation *= Quaternion.FromEulerAngles(1 * (float)e.Time, 0, 0);
+                MainCamera.Rotate(0, (float)e.Time * 90);
             }
 
             if (input.IsKeyDown(Key.Down))
             {
-                MainCamera.Rotation *= Quaternion.FromEulerAngles(-1 * (float)e.Time, 0, 0);
-            }*/
-
-            var mouse = Mouse.GetState();
-
-            // Calculate the offset of the mouse position
-            var deltaX = mouse.X - _lastPos.X;
-            var deltaY = mouse.Y - _lastPos.Y;
-            _lastPos = new Vector2(mouse.X, mouse.Y);
-
-            // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
-            MainCamera._yaw -= deltaX * (float)e.Time * 0.1f;
-            MainCamera._pitch += deltaY * (float)e.Time * 0.1f; // reversed since y-coordinates range from bottom to top
-        }
-
-        private Vector2 _lastPos;
-
-        protected override void OnMouseMove(MouseMoveEventArgs e)
-        {
-            if (Focused) // check to see if the window is focused
-            {
-                Mouse.SetPosition(X + Width / 2f, Y + Height / 2f);
+                MainCamera.Rotate(0, (float)e.Time * -90);
             }
 
-            base.OnMouseMove(e);
+            Console.WriteLine(Math.Round(1 / e.Time));
         }
     }
 }

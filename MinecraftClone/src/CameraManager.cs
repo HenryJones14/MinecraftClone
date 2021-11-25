@@ -9,25 +9,50 @@ namespace MinecraftClone
 {
     class Camera
     {
-        public Vector3 position;
+        // public values
+        public Vector3 Position { get { return position; } set { position = value; UpdateVectors(); } }
+        public float Yaw { get { return MathHelper.RadiansToDegrees(yaw); } set { yaw = MathHelper.DegreesToRadians(value); UpdateVectors(); } }
+        public float Pitch { get { return MathHelper.RadiansToDegrees(pitch); } set { pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -89, 89)); UpdateVectors(); } }
 
-        public Vector3 forward;
-        public Vector3 upward;
-        public Vector3 right;
+        public Vector3 Forward { get { return forward; } }
+        public Vector3 Upward { get { return upward; } }
+        public Vector3 Right { get { return right; } }
+
+
+
+        // private values
+        private Vector3 position;
+        private float yaw;
+        private float pitch;
+
+        private Vector3 forward;
+        private Vector3 upward;
+        private Vector3 right;
 
         private int fov;
         private float ratio;
 
-        public float _pitch = 0;
-        public float _yaw = 0;
+
 
         public Camera(float Ratio, int FOV)
         {
             position = Vector3.Zero;
+            yaw = 0;
+            pitch = 0;
 
-            forward = -Vector3.UnitZ;
-            upward = Vector3.UnitY;
-            right = Vector3.UnitX;
+            UpdateVectors();
+
+            ratio = Ratio;
+            fov = FOV;
+        }
+
+        public Camera(float Ratio, int FOV, Vector3 SpawnPosition, float SpawnYaw, float SpawnPitch)
+        {
+            position = Vector3.Zero;
+            yaw = MathHelper.DegreesToRadians(SpawnYaw);
+            pitch = MathHelper.DegreesToRadians(SpawnPitch);
+
+            UpdateVectors();
 
             ratio = Ratio;
             fov = FOV;
@@ -39,35 +64,52 @@ namespace MinecraftClone
             fov = FOV;
         }
 
+        public void Move(float MoveX, float MoveY, float MoveZ)
+        {
+            position += right * MoveX;
+            position += upward * MoveY;
+            position += forward * MoveZ;
+
+            UpdateVectors();
+        }
+
+        public void Rotate(float RotateYaw, float RotatePitch)
+        {
+            Yaw -= RotateYaw;
+            Pitch += RotatePitch;
+
+            UpdateVectors();
+        }
+
         public Matrix4 GetViewMatrix()
         {
-            UpdateVectors();
-            return Matrix4.LookAt(position, position + forward, upward);
+            return Matrix4.CreateTranslation(-position) * Matrix4.LookAt(position, position - forward, upward);
         }
 
         public Matrix4 GetProjectionMatrix()
         {
-            UpdateVectors();
             return Matrix4.CreateScale(1, 1, -1) * Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), ratio, 0.1f, 100.0f);
         }
 
         private void UpdateVectors()
         {
-            _pitch = Math.Max(-1.3f, Math.Min(_pitch, 1.3f));
+            // ctrl cv from https://github.com/opentk/LearnOpenTK/blob/3.x/Common/Camera.cs
 
-            // First, the front matrix is calculated using some basic trigonometry.
-            forward.X = (float)(Math.Cos(_pitch) * Math.Cos(_yaw));
-            forward.Y = (float)(Math.Sin(_pitch));
-            forward.Z = (float)(Math.Cos(_pitch) * Math.Sin(_yaw));
+            // First the front matrix is calculated using some basic trigonometry
+            forward.X = (float)Math.Cos(pitch) * (float)Math.Cos(yaw);
+            forward.Y = (float)Math.Sin(pitch);
+            forward.Z = (float)Math.Cos(pitch) * (float)Math.Sin(yaw);
 
-            // We need to make sure the vectors are all normalized, as otherwise we would get some funky results.
+            // We need to make sure the vectors are all normalized, as otherwise we would get some funky results
             forward = Vector3.Normalize(forward);
 
-            // Calculate both the right and the up vector using cross product.
-            // Note that we are calculating the right from the global up; this behaviour might
-            // not be what you need for all cameras so keep this in mind if you do not want a FPS camera.
+            // Calculate both the right and the up vector using cross product
+            // Note that we are calculating the right from the global up, this behaviour might
+            // not be what you need for all cameras so keep this in mind if you do not want a FPS camera
             right = Vector3.Normalize(Vector3.Cross(forward, Vector3.UnitY));
             upward = Vector3.Normalize(Vector3.Cross(right, forward));
+
+            right *= -1;
         }
     }
 }
