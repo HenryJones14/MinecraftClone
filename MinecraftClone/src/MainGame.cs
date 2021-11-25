@@ -15,8 +15,8 @@ namespace MinecraftClone
         Texture MainTexture;
         Camera MainCamera;
 
-        NormalMesh[,,] GeneratedMesh;
-        public static Terrain NoiseTerrain;
+        VoxelMesh VoxelMesh;
+        Shader VoxelShader;
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -36,25 +36,13 @@ namespace MinecraftClone
             //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
             //GL.PointSize(10);
 
-            NoiseTerrain = new Terrain(0);
-
-            GeneratedMesh = new NormalMesh[5, 3, 5];
-            for (int x = 0; x < 5; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    for (int z = 0; z < 5; z++)
-                    {
-                        GeneratedMesh[x, y, z] = new NormalMesh(new ChunkData(new Vector3(x, y, z)));
-                    }
-                }
-            }
 
 
             MainMesh = new NormalMesh();
+            VoxelMesh = new VoxelMesh();
 
             MainShader = new Shader("shaders/NormalShader.vert", "shaders/NormalShader.frag");
-            MainShader.Use();
+            VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
 
             MainTexture = new Texture("textures/box.png");
             MainTexture.Use();
@@ -70,56 +58,25 @@ namespace MinecraftClone
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            MainShader.Use();
             MainShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
             MainShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
-            MainTexture = new Texture("textures/box.png");
-            MainTexture.Use();
 
             MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(time, 0, 0) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
-            //MainShader.SetVector3("color", new Vector3(1, 0, 0));
             MainMesh.RenderMesh();
 
             MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, time, 0) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
-            //MainShader.SetVector3("color", new Vector3(0, 1, 0));
             MainMesh.RenderMesh();
 
             MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, 0, time) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
-            //MainShader.SetVector3("color", new Vector3(0, 0, 1));
             MainMesh.RenderMesh();
 
-            /*MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(1, 0, 0));
-            MainMesh.RenderMesh();
+            VoxelShader.Use();
+            VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
+            VoxelShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
 
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(-1, 0, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, -1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, 1));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, -1));
-            MainMesh.RenderMesh();*/
-
-            MainTexture = new Texture("textures/Minecraft/grass.png");
-            MainShader.SetVector3("color", new Vector3(1, 1, 1));
-            MainTexture.Use();
-
-            for (int x = 0; x < 5; x++)
-            {
-                for (int y = 0; y < 3; y++)
-                {
-                    for (int z = 0; z < 5; z++)
-                    {
-                        MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(x * 32, y * 32, z * 32));
-                        GeneratedMesh[x, y, z].RenderMesh();
-                    }
-                }
-            }
+            VoxelShader.SetMatrix4x4("local", Matrix4.CreateScale(1, 1, 1));
+            VoxelMesh.RenderMesh();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -138,6 +95,7 @@ namespace MinecraftClone
             */
 
             MainShader.Dispose();
+            VoxelShader.Dispose();
             base.OnUnload(e);
         }
 

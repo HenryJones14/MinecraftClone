@@ -304,7 +304,7 @@ namespace MinecraftClone
             InitializeMesh();
         }
 
-        public NormalMesh(ChunkData Chunk)
+        /*public NormalMesh(ChunkData Chunk)
         {
             List<Vector3> newvertices = new List<Vector3>();
             List<uint> newindices = new List<uint>();
@@ -506,11 +506,11 @@ namespace MinecraftClone
             indices = newindices.ToArray();
 
             InitializeMesh();
-        }
+        }*/
 
         #region Rendering
 
-        public int VertexArrayObject;
+        private int VertexArrayObject;
         private int VertexBufferObject;
         private int ElementBufferObject;
 
@@ -569,6 +569,427 @@ namespace MinecraftClone
                 info.Add(normals[i].X);
                 info.Add(normals[i].Y);
                 info.Add(normals[i].Z);
+            }
+
+            return info.ToArray();
+        }
+
+        #endregion
+    }
+
+    /*
+    public class VoxelMesh
+    {
+        public Vector3[] vertices;
+        public uint[] indices;
+        public Vector2[] uvs;
+        public float[] lights;
+
+        public VoxelMesh()
+        {
+            vertices = new Vector3[4 * 6]
+            {
+                // right
+                new Vector3( 0.5f,  0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f,  0.5f,  0.5f),
+
+                // left
+                new Vector3(-0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f, -0.5f),
+
+                // top
+                new Vector3( 0.5f,  0.5f, -0.5f),
+                new Vector3(-0.5f,  0.5f,  0.5f),
+                new Vector3( 0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f, -0.5f),
+
+                // bottom
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+
+                // front
+                new Vector3( 0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f,  0.5f),
+
+                // back
+                new Vector3(-0.5f,  0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f,  0.5f, -0.5f),
+            };
+            indices = new uint[6 * 6]
+            {
+                // right
+                 0,  1,  2,
+                 0,  3,  1,
+                 
+                // left
+                 4,  5,  6,
+                 4,  7,  5,
+                 
+                // top
+                 8,  9, 10,
+                 8, 11,  9,
+                 
+                // bottom
+                12, 13, 14,
+                12, 15, 13,
+                
+                // front
+                16, 17, 18,
+                16, 19, 17,
+                
+                // bask
+                20, 21, 22,
+                20, 23, 21,
+            };
+            uvs = new Vector2[4 * 6]
+            {
+                // right
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+                
+                // left
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+                
+                // top
+                new Vector2(0.0f, 1.0f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.0f, 0.5f),
+                new Vector2(0.5f, 1.0f),
+                
+                // bottom
+                new Vector2(0.0f, 0.5f),
+                new Vector2(0.5f, 0.0f),
+                new Vector2(0.0f, 0.0f),
+                new Vector2(0.5f, 0.5f),
+                
+                // front
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 0.0f),
+                new Vector2(0.5f, 0.0f),
+                new Vector2(1.0f, 0.5f),
+                
+                // back
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+            };
+            lights = new float[6 * 6]
+            {
+                // right
+                0.7f, 0.7f, 0.7f,
+                0.7f, 0.7f, 0.7f,
+                
+                // left
+                0.7f, 0.7f, 0.7f,
+                0.7f, 0.7f, 0.7f,
+                
+                // top
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                
+                // bottom
+                0.4f, 0.4f, 0.4f,
+                0.4f, 0.4f, 0.4f,
+                
+                // front
+                0.7f, 0.7f, 0.7f,
+                0.7f, 0.7f, 0.7f,
+                
+                // back
+                0.7f, 0.7f, 0.7f,
+                0.7f, 0.7f, 0.7f,
+            };
+
+            InitializeMesh();
+        }
+
+        #region Rendering
+
+        private int VertexArrayObject;
+        private int VertexBufferObject;
+        private int ElementBufferObject;
+
+        public void RenderMesh()
+        {
+            GL.BindVertexArray(VertexArrayObject);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(0);
+        }
+
+        private void InitializeMesh()
+        {
+            VertexArrayObject = GL.GenVertexArray();
+            VertexBufferObject = GL.GenBuffer();
+            ElementBufferObject = GL.GenBuffer();
+
+            GL.BindVertexArray(VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, GetMemorySize(), GetMemoryInfo(), BufferUsageHint.StaticDraw);
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+
+            GL.EnableVertexAttribArray(2);
+            GL.VertexAttribPointer(2, 1, VertexAttribPointerType.Float, false, 6 * sizeof(float), 5 * sizeof(float));
+
+            GL.BindVertexArray(0);
+        }
+
+        private int GetMemorySize()
+        {
+            return GetMemoryInfo().Length * sizeof(float);
+        }
+
+        private float[] GetMemoryInfo()
+        {
+            List<float> info = new List<float>();
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                info.Add(vertices[i].X);
+                info.Add(vertices[i].Y);
+                info.Add(vertices[i].Z);
+
+                info.Add(uvs[i].X);
+                info.Add(uvs[i].Y);
+
+                info.Add(lights[i]);
+            }
+
+            for (int i = 0; i < info.Count; i++)
+            {
+                Console.WriteLine(info[i]);
+            }
+
+            return info.ToArray();
+        }
+        
+        #endregion
+    }
+    */
+
+
+    public class VoxelMesh
+    {
+        public int vertexcount;
+        public Vector3[] vertices;
+        public uint[] indices;
+        public Vector2[] uvs;
+        public float[] normals;
+
+        public VoxelMesh()
+        {
+            vertexcount = 4 * 6;
+
+            vertices = new Vector3[4 * 6]
+            {
+                // right
+                new Vector3( 0.5f,  0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f,  0.5f,  0.5f),
+
+                // left
+                new Vector3(-0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f, -0.5f),
+
+                // top
+                new Vector3( 0.5f,  0.5f, -0.5f),
+                new Vector3(-0.5f,  0.5f,  0.5f),
+                new Vector3( 0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f, -0.5f),
+
+                // bottom
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+
+                // front
+                new Vector3( 0.5f,  0.5f,  0.5f),
+                new Vector3(-0.5f, -0.5f,  0.5f),
+                new Vector3( 0.5f, -0.5f,  0.5f),
+                new Vector3(-0.5f,  0.5f,  0.5f),
+
+                // back
+                new Vector3(-0.5f,  0.5f, -0.5f),
+                new Vector3( 0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3( 0.5f,  0.5f, -0.5f),
+            };
+            indices = new uint[6 * 6]
+            {
+                // right
+                 0,  1,  2,
+                 0,  3,  1,
+                 
+                // left
+                 4,  5,  6,
+                 4,  7,  5,
+                 
+                // top
+                 8,  9, 10,
+                 8, 11,  9,
+                 
+                // bottom
+                12, 13, 14,
+                12, 15, 13,
+                
+                // front
+                16, 17, 18,
+                16, 19, 17,
+                
+                // bask
+                20, 21, 22,
+                20, 23, 21,
+            };
+            uvs = new Vector2[4 * 6]
+            {
+                // right
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+                
+                // left
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+                
+                // top
+                new Vector2(0.0f, 1.0f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.0f, 0.5f),
+                new Vector2(0.5f, 1.0f),
+                
+                // bottom
+                new Vector2(0.0f, 0.5f),
+                new Vector2(0.5f, 0.0f),
+                new Vector2(0.0f, 0.0f),
+                new Vector2(0.5f, 0.5f),
+                
+                // front
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 0.0f),
+                new Vector2(0.5f, 0.0f),
+                new Vector2(1.0f, 0.5f),
+                
+                // back
+                new Vector2(0.5f, 1.0f),
+                new Vector2(1.0f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(1.0f, 1.0f),
+            };
+            normals = new float[4 * 6]
+            {
+                // right
+                0.7f, 0.7f, 0.7f, 0.7f,
+                
+                // left
+                0.7f, 0.7f, 0.7f, 0.7f,
+                // top
+                1.0f, 1.0f, 1.0f, 1.0f,
+                
+                // bottom
+                0.4f, 0.4f, 0.4f, 0.4f,
+                
+                // front
+                0.7f, 0.7f, 0.7f, 0.7f,
+                
+                // back
+                0.7f, 0.7f, 0.7f, 0.7f,
+            };
+
+            InitializeMesh();
+        }
+
+
+
+        #region Rendering
+
+        private int VertexArrayObject;
+        private int VertexBufferObject;
+        private int ElementBufferObject;
+
+        public void RenderMesh()
+        {
+            GL.BindVertexArray(VertexArrayObject);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(0);
+        }
+
+        private void InitializeMesh()
+        {
+            VertexArrayObject = GL.GenVertexArray();
+            VertexBufferObject = GL.GenBuffer();
+            ElementBufferObject = GL.GenBuffer();
+
+            GL.BindVertexArray(VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, GetMemorySize(), GetMemoryInfo(), BufferUsageHint.StaticDraw);
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+
+            GL.EnableVertexAttribArray(2);
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 5 * sizeof(float));
+
+            GL.BindVertexArray(0);
+        }
+
+
+
+        private int GetMemorySize()
+        {
+            return GetMemoryInfo().Length * sizeof(float);
+        }
+
+        private float[] GetMemoryInfo()
+        {
+            List<float> info = new List<float>();
+
+            for (int i = 0; i < vertexcount; i++)
+            {
+                info.Add(vertices[i].X);
+                info.Add(vertices[i].Y);
+                info.Add(vertices[i].Z);
+
+                info.Add(uvs[i].X);
+                info.Add(uvs[i].Y);
+
+                info.Add(normals[i]);
+                Console.WriteLine(normals[i]);
             }
 
             return info.ToArray();
