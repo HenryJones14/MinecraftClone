@@ -21,14 +21,14 @@ namespace MinecraftClone
                 {
                     for (int z = 0; z < 32; z++)
                     {
-                        if (MainGame.NoiseTerrain.SamplePoint(x, y, z, ChunkOffset))
+                        /*if (MainGame.NoiseTerrain.SamplePoint(x, y, z, ChunkOffset))
                         {
                             chunk[x, y, z] = new BlockData(BlockName.Stone, true);
                         }
                         else
                         {
                             chunk[x, y, z] = new BlockData(BlockName.Air, false);
-                        }
+                        }*/
                     }
                 }
             }
