@@ -68,9 +68,10 @@
     <Compile Include="src\CameraManager.cs" />
     <Compile Include="src\ChunkManager.cs" />
     <Compile Include="src\MainGame.cs" />
-    <Compile Include="src\MeshManager.cs" />
+    <Compile Include="src\NormalMesh.cs" />
     <Compile Include="src\ShaderManager.cs" />
     <Compile Include="src\TextureManager.cs" />
+    <Compile Include="src\VoxelMesh.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

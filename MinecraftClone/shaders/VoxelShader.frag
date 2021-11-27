@@ -8,27 +8,9 @@ uniform sampler2D texture0;
 
 void main()
 {
-    FragColor = texture(texture0, uvpos) * light; //vec4(1.0f, 0.5f, 0.2f, 1.0f);
-    
-    if (FragColor.a == 0)
-    {
-        discard;
-    }
+    FragColor = texture(texture0, uvpos);
+    vec3 col = FragColor.rgb;
+    float lit = (light * 0.5f + 0.5f);
+
+    FragColor = vec4(mix(col, col * lit, FragColor.a), 1);
 }
-
-/*
-#version 330 core
-out vec4 FragColor;
-
-in vec2 uvpos;
-in float light;
-
-void main()
-{
-    FragColor = vec4(light, light, light, 1);//texture(textures, vec3(uvpos, 1)) * light;
-    if (FragColor.a == 0)
-    {
-        discard;
-    }
-}
-*/
