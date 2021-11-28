@@ -5,6 +5,8 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 using System;
+using System.Collections.Generic;
+
 
 namespace MinecraftClone
 {
@@ -19,8 +21,8 @@ namespace MinecraftClone
         Shader VoxelShader;
         TextureArray VoxelTextures;
 
-        ChunkData[] Chunks;
-        public static readonly Vector3 WORLDSIZE = new Vector3(5, 1, 5);
+        List<Vector3> Positions;
+        List<ChunkData> Chunks;
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -28,8 +30,6 @@ namespace MinecraftClone
         }
 
         #region Rendering
-
-        int test = (int)(WORLDSIZE.X * WORLDSIZE.Y * WORLDSIZE.Z);
 
         protected override void OnLoad(EventArgs e)
         {
@@ -42,20 +42,8 @@ namespace MinecraftClone
             //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
             //GL.PointSize(10);
 
-            Chunks = new ChunkData[(int)WORLDSIZE.X * (int)WORLDSIZE.Y * (int)WORLDSIZE.Z];
-            for (int x = 0; x < WORLDSIZE.X; x++)
-            {
-                for (int y = 0; y < WORLDSIZE.Y; y++)
-                {
-                    for (int z = 0; z < WORLDSIZE.Z; z++)
-                    {
-                        // (z * xMax * yMax) + (y * xMax) + x
-                        Chunks[(z * (int)WORLDSIZE.X * (int)WORLDSIZE.Y) + (y * (int)WORLDSIZE.X) + x] = new ChunkData(new Vector3(x - (int)(WORLDSIZE.X * 0.5f), y - WORLDSIZE.Y + 1, z - (int)(WORLDSIZE.Z * 0.5f)));
-                        Console.WriteLine(test);
-                        test -= 1;
-                    }
-                }
-            }
+            Positions = new List<Vector3>();
+            Chunks = new List<ChunkData>();
 
             VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
             VoxelShader.Use();
@@ -87,45 +75,44 @@ namespace MinecraftClone
             MainShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
             MainTexture.Use();
 
-            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(time, 0, 0) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
+            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(time, 0, 0));
             //MainShader.SetVector3("color", new Vector3(1, 0, 0));
             MainMesh.RenderMesh();
 
-            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, time, 0) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
+            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, time, 0));
             //MainShader.SetVector3("color", new Vector3(0, 1, 0));
             MainMesh.RenderMesh();
 
-            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, 0, time) * Matrix4.CreateScale(0.7f, 0.7f, 0.7f));
+            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(0, 0, time));
             //MainShader.SetVector3("color", new Vector3(0, 0, 1));
             MainMesh.RenderMesh();
 
-            /*MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(1, 0, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(-1, 0, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, -1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, 1));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, -1));
-            MainMesh.RenderMesh();*/
+            Vector3 pos = new Vector3((float)Math.Round((MainCamera.Position.X - 32) / 64f), (float)Math.Round((MainCamera.Position.Y - 32) / 64f), (float)Math.Round((MainCamera.Position.Z - 32) / 64f));
 
             VoxelShader.Use();
             VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
             VoxelShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
             VoxelTextures.Use();
 
-            for (int i = 0; i < Chunks.Length; i++)
+            for (int x = -1; x < 2; x++)
             {
-                VoxelShader.SetMatrix4x4("local", Matrix4.CreateTranslation(Chunks[i].offset * 64));
-                Chunks[i].mesh.RenderMesh();
+                for (int y = -1; y < 2; y++)
+                {
+                    for (int z = -1; z < 2; z++)
+                    {
+                        if (!Positions.Contains(pos + new Vector3(x, y, z)))
+                        {
+                            Chunks.Add(new ChunkData(pos + new Vector3(x, y, z)));
+                            Positions.Add(pos + new Vector3(x, y, z));
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < Chunks.Count; i++)
+            {
+                VoxelShader.SetMatrix4x4("local", Matrix4.CreateTranslation(Chunks[i].chunkOffset * 64));
+                Chunks[i].Render();
             }
 
             Context.SwapBuffers();
@@ -164,7 +151,7 @@ namespace MinecraftClone
             if (input.IsKeyDown(Key.Escape)) { Exit(); }
             base.OnUpdateFrame(e);
 
-            float speed = 5;
+            float speed = 20;
 
             if (input.IsKeyDown(Key.W))
             {
@@ -198,25 +185,25 @@ namespace MinecraftClone
 
             if (input.IsKeyDown(Key.Right))
             {
-                MainCamera.Rotate((float)e.Time * 90, 0);
+                MainCamera.Rotate((float)e.Time * 9 * speed, 0);
             }
 
             if (input.IsKeyDown(Key.Left))
             {
-                MainCamera.Rotate((float)e.Time * -90, 0);
+                MainCamera.Rotate((float)e.Time * -9 * speed, 0);
             }
 
             if (input.IsKeyDown(Key.Up))
             {
-                MainCamera.Rotate(0, (float)e.Time * 90);
+                MainCamera.Rotate(0, (float)e.Time * 9 * speed);
             }
 
             if (input.IsKeyDown(Key.Down))
             {
-                MainCamera.Rotate(0, (float)e.Time * -90);
+                MainCamera.Rotate(0, (float)e.Time * -9 * speed);
             }
 
-            Console.WriteLine(Math.Round(1 / e.Time));
+            //Console.WriteLine(Math.Round(1 / e.Time));
         }
     }
 }

@@ -11,13 +11,15 @@ namespace MinecraftClone
 {
     public class ChunkData
     {
-        public BlockData[,,] chunk;
-        public VoxelMesh mesh;
-        public Vector3 offset;
+        public Vector3 chunkOffset;
+
+        private BlockData[,,] chunk;
+        private VoxelMesh mesh;
 
         public ChunkData(Vector3 ChunkOffset)
         {
-            offset = ChunkOffset;
+            Console.WriteLine("Generating chunk");
+            chunkOffset = ChunkOffset;
             chunk = new BlockData[64, 64, 64];
             Random random = new Random();
 
@@ -27,11 +29,11 @@ namespace MinecraftClone
                 {
                     for (int z = 0; z < 64; z++)
                     {
-                        if (Terrain.SamplePoint(x, y, z, offset))
+                        if (Terrain.SamplePoint(x, y, z, chunkOffset))
                         {
-                            if (Terrain.SamplePoint(x, y + 3, z, offset) || y < 0 - offset.Y * 64)
+                            if (Terrain.SamplePoint(x, y + 3, z, chunkOffset) || y < 0 - chunkOffset.Y * 64)
                             {
-                                if (random.Next(0, 250) == 0 && y < 0 - offset.Y * 64)
+                                if (random.Next(0, 250) == 0 && y < 0 - chunkOffset.Y * 64)
                                 {
                                     chunk[x, y, z] = new BlockData(BlockName.Diamond, true, (BlockRotation)random.Next(0, 4));
                                 }
@@ -40,7 +42,7 @@ namespace MinecraftClone
                                     chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 4));
                                 }
                             }
-                            else if (Terrain.SamplePoint(x, y + 2, z, offset))
+                            else if (Terrain.SamplePoint(x, y + 2, z, chunkOffset))
                             {
                                 if (random.Next(0, 2) > 0)
                                 {
@@ -51,7 +53,7 @@ namespace MinecraftClone
                                     chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 4));
                                 }
                             }
-                            else if (Terrain.SamplePoint(x, y + 1, z, offset))
+                            else if (Terrain.SamplePoint(x, y + 1, z, chunkOffset))
                             {
                                 chunk[x, y, z] = new BlockData(BlockName.Dirt, true, (BlockRotation)random.Next(0, 4));
                             }
@@ -68,12 +70,12 @@ namespace MinecraftClone
                 }
             }
 
-            mesh = GenerateMesh(offset * 64);
-            chunk = null;
+            GenerateMesh();
         }
 
-        private VoxelMesh GenerateMesh(Vector3 Offset)
+        private void GenerateMesh()
         {
+            Console.WriteLine("Generating mesh");
             List<Vector3> newvertices = new List<Vector3>();
             List<uint> newindices = new List<uint>();
             List<Vector3> newuvs = new List<Vector3>();
@@ -86,7 +88,7 @@ namespace MinecraftClone
             {
                 for (int y = 0; y < 64; y++)
                 {
-                    light = (y + Offset.Y + 128) / 128f;
+                    light = (y + chunkOffset.Y * 64 + 128) / 128f;
                     for (int z = 0; z < 64; z++)
                     {
                         if (chunk[x, y, z].BlockIsSolid)
@@ -309,7 +311,12 @@ namespace MinecraftClone
                     }
                 }
             }
-            return new VoxelMesh(newvertices.Count(), newvertices.ToArray(), newindices.ToArray(), newuvs.ToArray(), newlights.ToArray());
+            mesh = new VoxelMesh(newvertices.Count(), newvertices.ToArray(), newindices.ToArray(), newuvs.ToArray(), newlights.ToArray());
+        }
+
+        public void Render()
+        {
+            mesh.RenderMesh();
         }
     }
 

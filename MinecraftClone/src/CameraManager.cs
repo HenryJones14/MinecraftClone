@@ -40,10 +40,8 @@ namespace MinecraftClone
             yaw = 0;
             pitch = 0;
 
+            ChangeFOV(Ratio, FOV);
             UpdateVectors();
-
-            ratio = Ratio;
-            fov = FOV;
         }
 
         public Camera(float Ratio, int FOV, Vector3 SpawnPosition, float SpawnYaw, float SpawnPitch)
@@ -83,12 +81,12 @@ namespace MinecraftClone
 
         public Matrix4 GetViewMatrix()
         {
-            return Matrix4.CreateTranslation(-position) * Matrix4.LookAt(position, position - forward, upward);
+            return Matrix4.LookAt(position, position - forward, upward);
         }
 
         public Matrix4 GetProjectionMatrix()
         {
-            return Matrix4.CreateScale(1, 1, -1) * Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), ratio, 0.1f, 100.0f);
+            return Matrix4.CreateScale(1, 1, -1) * Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), ratio, 0.1f, 1000.0f);
         }
 
         private void UpdateVectors()
