@@ -20,7 +20,7 @@ namespace MinecraftClone
         Texture VoxelTexture;
 
         ChunkData[] Chunks;
-        public static readonly Vector3 WORLDSIZE = new Vector3(3, 2, 3);
+        public static readonly Vector3 WORLDSIZE = new Vector3(1, 1, 1);
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -99,23 +99,21 @@ namespace MinecraftClone
             //MainShader.SetVector3("color", new Vector3(0, 0, 1));
             MainMesh.RenderMesh();
 
-            /*MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(1, 0, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationX(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(-1, 0, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationY(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, -1, 0));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(-time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, 1));
-            MainMesh.RenderMesh();
-
-            MainShader.SetMatrix4x4("local", Matrix4.CreateRotationZ(time) * Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(0, 0, -1));
-            MainMesh.RenderMesh();*/
+            for (int x = 0; x < 64; x++)
+            {
+                for (int y = 0; y < 64; y++)
+                {
+                    for (int z = 0; z < 64; z++)
+                    {
+                        if (Chunks[0].chunk[x, y, z].BlockIsSolid)
+                        {
+                            MainShader.SetMatrix4x4("local", Matrix4.CreateScale(0.3f, 0.3f, 0.3f) * Matrix4.CreateTranslation(x, y, z));
+                            //MainShader.SetVector3("color", new Vector3(0, 0, 1));
+                            MainMesh.RenderMesh();
+                        }
+                    }
+                }
+            }
 
             VoxelShader.Use();
             VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
@@ -216,7 +214,7 @@ namespace MinecraftClone
                 MainCamera.Rotate(0, (float)e.Time * -90);
             }
 
-            Console.WriteLine(Math.Round(1 / e.Time));
+            //Console.WriteLine(Math.Round(1 / e.Time));
         }
     }
 }

@@ -26,29 +26,25 @@ namespace MinecraftClone
                 {
                     for (int z = 0; z < 64; z++)
                     {
-                        Random random = new Random();
                         if (Terrain.SamplePoint(x, y, z, offset))
                         {
-                            chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 3));
+                            chunk[x, y, z] = new BlockData(BlockName.Stone, true, BlockRotation.North);
                         }
                         else
                         {
-                            chunk[x, y, z] = new BlockData(BlockName.Air, false, (BlockRotation)random.Next(0, 3));
+                            chunk[x, y, z] = new BlockData(BlockName.Air, false, BlockRotation.North);
                         }
                     }
                 }
             }
 
             mesh = GenerateMesh();
-            chunk = null;
         }
 
         private VoxelMesh GenerateMesh()
         {
-            List<Vector3> newvertices = new List<Vector3>();
             List<uint> newindices = new List<uint>();
-            List<Vector2> newuvs = new List<Vector2>();
-            List<float> newlights = new List<float>();
+            List<uint> newvertices = new List<uint>();
 
             uint offset = 0;
 
@@ -63,20 +59,21 @@ namespace MinecraftClone
                             // up
                             if (y + 1 >= 64 || (y + 1 < 64 && !chunk[x, y + 1, z].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x + 1, y + 1, z));
-                                newvertices.Add(new Vector3(x, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x, y + 1, z));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.0f, 1.0f)));
+                                newvertices.Add(100);
 
-                                newuvs.Add(new Vector2(0.0f, 1.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(0.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z + 1)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                newvertices.Add(100);
 
-                                newlights.Add(1f);
-                                newlights.Add(1f);
-                                newlights.Add(1f);
-                                newlights.Add(1f);
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z + 1)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.0f, 0.5f)));
+                                newvertices.Add(100);
+
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 1.0f)));
+                                newvertices.Add(100);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -89,23 +86,25 @@ namespace MinecraftClone
                                 offset += 4;
                             }
 
+                            /*
                             // down
                             if (y - 1 < 0 || (y - 1 >= 0 && !chunk[x, y - 1, z].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x + 1, y, z + 1));
-                                newvertices.Add(new Vector3(x, y, z));
-                                newvertices.Add(new Vector3(x + 1, y, z));
-                                newvertices.Add(new Vector3(x, y, z + 1));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z + 1)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.0f, 0.5f)));
+                                newvertices.Add(0);
 
-                                newuvs.Add(new Vector2(0.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.0f));
-                                newuvs.Add(new Vector2(0.0f, 0.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-
-                                newlights.Add(0f);
-                                newlights.Add(0f);
-                                newlights.Add(0f);
-                                newlights.Add(0f);
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.0f)));
+                                newvertices.Add(0);
+                                
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.0f, 0.0f)));
+                                newvertices.Add(0);
+                                
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z + 1)));
+                                newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                newvertices.Add(0);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -121,20 +120,42 @@ namespace MinecraftClone
                             // Left
                             if (x - 1 < 0 || (x - 1 >= 0 && !chunk[x - 1, y, z].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x, y, z));
-                                newvertices.Add(new Vector3(x, y, z + 1));
-                                newvertices.Add(new Vector3(x, y + 1, z));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.West)
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(50);
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.0f)));
+                                    newvertices.Add(50);
 
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.0f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(50);
+                                }
+                                else
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 1.0f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 1.0f)));
+                                    newvertices.Add(50);
+                                }
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -150,20 +171,42 @@ namespace MinecraftClone
                             // Right
                             if (x + 1 >= 64 || (x + 1 < 64 && !chunk[x + 1, y, z].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x + 1, y + 1, z));
-                                newvertices.Add(new Vector3(x + 1, y, z + 1));
-                                newvertices.Add(new Vector3(x + 1, y, z));
-                                newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.East)
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(50);
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.0f)));
+                                    newvertices.Add(50);
 
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.0f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(50);
+                                }
+                                else
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 1.0f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(50);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 1.0f)));
+                                    newvertices.Add(50);
+                                }
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -179,20 +222,42 @@ namespace MinecraftClone
                             // Front
                             if (z + 1 >= 64 || (z + 1 < 64 && !chunk[x, y, z + 1].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x, y, z + 1));
-                                newvertices.Add(new Vector3(x + 1, y, z + 1));
-                                newvertices.Add(new Vector3(x, y + 1, z + 1));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.North)
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(75);
 
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 0.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.0f)));
+                                    newvertices.Add(75);
 
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.0f)));
+                                    newvertices.Add(75);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(75);
+                                }
+                                else
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 1.0f)));
+                                    newvertices.Add(75);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(75);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(75);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z + 1)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 1.0f)));
+                                    newvertices.Add(75);
+                                }
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -208,20 +273,42 @@ namespace MinecraftClone
                             // Back
                             if (z - 1 < 0 || (z - 1 >= 0 && !chunk[x, y, z - 1].BlockIsSolid))
                             {
-                                newvertices.Add(new Vector3(x, y + 1, z));
-                                newvertices.Add(new Vector3(x + 1, y, z));
-                                newvertices.Add(new Vector3(x, y, z));
-                                newvertices.Add(new Vector3(x + 1, y + 1, z));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.South)
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(25);
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.0f)));
+                                    newvertices.Add(25);
 
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.0f)));
+                                    newvertices.Add(25);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(25);
+                                }
+                                else
+                                {
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 1.0f)));
+                                    newvertices.Add(25);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 0.5f)));
+                                    newvertices.Add(25);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x, y, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(0.5f, 0.5f)));
+                                    newvertices.Add(25);
+
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector3(x + 1, y + 1, z)));
+                                    newvertices.Add(VoxelMesh.PackPosition(new Vector2(1.0f, 1.0f)));
+                                    newvertices.Add(25);
+                                }
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -232,12 +319,12 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
-                            }
+                            }*/
                         }
                     }
                 }
             }
-            return new VoxelMesh(newvertices.Count(), newvertices.ToArray(), newindices.ToArray(), newuvs.ToArray(), newlights.ToArray());
+            return new VoxelMesh(newindices.ToArray(), newvertices.ToArray());
         }
     }
 

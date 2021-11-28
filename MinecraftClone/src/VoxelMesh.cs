@@ -9,13 +9,10 @@ namespace MinecraftClone
 {
     public class VoxelMesh
     {
-        public int vertexcount;
-        public Vector3[] vertices;
         public uint[] indices;
-        public Vector2[] uvs;
-        public float[] lights;
+        public uint[] vertices;
 
-        public VoxelMesh()
+        /*public VoxelMesh()
         {
             vertexcount = 4 * 6;
 
@@ -143,15 +140,32 @@ namespace MinecraftClone
             };
 
             InitializeMesh();
-        }
+        }*/
 
-        public VoxelMesh(int VertexCount, Vector3[] Vertices, uint[] Indices, Vector2[] UVs, float[] Lights)
+        public VoxelMesh(uint[] Triangles, uint[] VertexInfo)
         {
-            vertexcount = VertexCount;
-            vertices = Vertices;
-            indices = Indices;
-            uvs = UVs;
-            lights = Lights;
+            indices = Triangles;
+            vertices = VertexInfo;
+
+            Console.WriteLine("Raw pos " + Convert.ToString(VertexInfo[0], 2));
+            Console.WriteLine("Vec3 pos " + UnpackPosition(VertexInfo[0]));
+            Console.WriteLine("UVs " + Convert.ToString(VertexInfo[1], 2));
+            Console.WriteLine("Light " + Convert.ToString(VertexInfo[2], 2));
+
+            Console.WriteLine("Raw pos " + Convert.ToString(VertexInfo[3], 2));
+            Console.WriteLine("Vec3 pos " + UnpackPosition(VertexInfo[3]));
+            Console.WriteLine("UVs " + Convert.ToString(VertexInfo[4], 2));
+            Console.WriteLine("Light " + Convert.ToString(VertexInfo[5], 2));
+
+            Console.WriteLine("Raw pos " + Convert.ToString(VertexInfo[6], 2));
+            Console.WriteLine("Vec3 pos " + UnpackPosition(VertexInfo[6]));
+            Console.WriteLine("UVs " + Convert.ToString(VertexInfo[7], 2));
+            Console.WriteLine("Light " + Convert.ToString(VertexInfo[8], 2));
+
+            Console.WriteLine("Raw pos " + Convert.ToString(VertexInfo[9], 2));
+            Console.WriteLine("Vec3 pos " + UnpackPosition(VertexInfo[9]));
+            Console.WriteLine("UVs " + Convert.ToString(VertexInfo[10], 2));
+            Console.WriteLine("Light " + Convert.ToString(VertexInfo[11], 2));
 
             InitializeMesh();
         }
@@ -177,49 +191,41 @@ namespace MinecraftClone
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, GetMemorySize(), GetMemoryInfo(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(uint), vertices, BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.UnsignedInt, false, 3 * sizeof(uint), 0);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.UnsignedInt, false, 3 * sizeof(uint), 1 * sizeof(uint));
 
             GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 5 * sizeof(float));
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.UnsignedInt, false, 3 * sizeof(uint), 2 * sizeof(uint));
 
             GL.BindVertexArray(0);
         }
 
-
-
-        private int GetMemorySize()
-        {
-            return GetMemoryInfo().Length * sizeof(float);
-        }
-
-        private float[] GetMemoryInfo()
-        {
-            List<float> info = new List<float>();
-
-            for (int i = 0; i < vertexcount; i++)
-            {
-                info.Add(vertices[i].X);
-                info.Add(vertices[i].Y);
-                info.Add(vertices[i].Z);
-
-                info.Add(uvs[i].X);
-                info.Add(uvs[i].Y);
-
-                info.Add(lights[i]);
-            }
-
-            return info.ToArray();
-        }
-
         #endregion
+
+        // resources:
+        // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-and-shift-operators
+        // https://stackoverflow.com/questions/6556961/use-of-the-bitwise-operators-to-pack-multiple-values-in-one-int
+
+        public static uint PackPosition(Vector3 Input)
+        {
+            return ((uint)Input.X << 12) | ((uint)Input.Y << 6) | ((uint)Input.Z << 0);
+        }
+        public static uint PackPosition(Vector2 Input)
+        {
+            return ((uint)Input.X << 12) | ((uint)Input.Y << 6) | (0 << 0);
+        }
+
+        public static Vector3 UnpackPosition(uint Input)
+        {
+            return new Vector3((Input >> 12) & 0b111111, (Input >> 6) & 0b111111, (Input >> 0) & 0b111111);
+        }
     }
 }
