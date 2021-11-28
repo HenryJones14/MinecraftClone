@@ -12,7 +12,7 @@ namespace MinecraftClone
         public int vertexcount;
         public Vector3[] vertices;
         public uint[] indices;
-        public Vector2[] uvs;
+        public Vector3[] uvs;
         public float[] lights;
 
         public VoxelMesh()
@@ -83,43 +83,43 @@ namespace MinecraftClone
                 20, 21, 22,
                 20, 23, 21,
             };
-            uvs = new Vector2[4 * 6]
+            uvs = new Vector3[4 * 6]
             {
                 // right
-                new Vector2(0.000f, 1.000f),
-                new Vector2(0.333f, 0.500f),
-                new Vector2(0.000f, 0.500f),
-                new Vector2(0.333f, 1.000f),
+                new Vector3(0.000f, 1.000f, 0),
+                new Vector3(0.333f, 0.500f, 0),
+                new Vector3(0.000f, 0.500f, 0),
+                new Vector3(0.333f, 1.000f, 0),
                 
                 // left
-                new Vector2(0.333f, 1.000f),
-                new Vector2(0.666f, 0.500f),
-                new Vector2(0.333f, 0.500f),
-                new Vector2(0.666f, 1.000f),
+                new Vector3(0.333f, 1.000f, 0),
+                new Vector3(0.666f, 0.500f, 0),
+                new Vector3(0.333f, 0.500f, 0),
+                new Vector3(0.666f, 1.000f, 0),
                 
                 // top
-                new Vector2(0.666f, 1.000f),
-                new Vector2(0.999f, 0.500f),
-                new Vector2(0.666f, 0.500f),
-                new Vector2(0.999f, 1.000f),
+                new Vector3(0.666f, 1.000f, 0),
+                new Vector3(0.999f, 0.500f, 0),
+                new Vector3(0.666f, 0.500f, 0),
+                new Vector3(0.999f, 1.000f, 0),
                 
                 // bottom
-                new Vector2(0.000f, 0.500f),
-                new Vector2(0.333f, 0.000f),
-                new Vector2(0.000f, 0.000f),
-                new Vector2(0.333f, 0.500f),
+                new Vector3(0.000f, 0.500f, 0),
+                new Vector3(0.333f, 0.000f, 0),
+                new Vector3(0.000f, 0.000f, 0),
+                new Vector3(0.333f, 0.500f, 0),
                 
                 // front
-                new Vector2(0.333f, 0.500f),
-                new Vector2(0.666f, 0.000f),
-                new Vector2(0.333f, 0.000f),
-                new Vector2(0.666f, 0.500f),
+                new Vector3(0.333f, 0.500f, 0),
+                new Vector3(0.666f, 0.000f, 0),
+                new Vector3(0.333f, 0.000f, 0),
+                new Vector3(0.666f, 0.500f, 0),
                 
                 // back
-                new Vector2(0.666f, 0.500f),
-                new Vector2(0.999f, 0.000f),
-                new Vector2(0.666f, 0.000f),
-                new Vector2(0.999f, 0.500f),
+                new Vector3(0.666f, 0.500f, 0),
+                new Vector3(0.999f, 0.000f, 0),
+                new Vector3(0.666f, 0.000f, 0),
+                new Vector3(0.999f, 0.500f, 0),
             };
             lights = new float[4 * 6]
             {
@@ -145,7 +145,7 @@ namespace MinecraftClone
             InitializeMesh();
         }
 
-        public VoxelMesh(int VertexCount, Vector3[] Vertices, uint[] Indices, Vector2[] UVs, float[] Lights)
+        public VoxelMesh(int VertexCount, Vector3[] Vertices, uint[] Indices, Vector3[] UVs, float[] Lights)
         {
             vertexcount = VertexCount;
             vertices = Vertices;
@@ -183,13 +183,13 @@ namespace MinecraftClone
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 7 * sizeof(float), 0);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 7 * sizeof(float), 3 * sizeof(float));
 
             GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 5 * sizeof(float));
+            GL.VertexAttribPointer(2, 1, VertexAttribPointerType.Float, false, 7 * sizeof(float), 6 * sizeof(float));
 
             GL.BindVertexArray(0);
         }
@@ -213,6 +213,7 @@ namespace MinecraftClone
 
                 info.Add(uvs[i].X);
                 info.Add(uvs[i].Y);
+                info.Add(uvs[i].Z);
 
                 info.Add(lights[i]);
             }

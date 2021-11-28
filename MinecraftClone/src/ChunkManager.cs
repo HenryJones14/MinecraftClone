@@ -19,6 +19,7 @@ namespace MinecraftClone
         {
             offset = ChunkOffset;
             chunk = new BlockData[64, 64, 64];
+            Random random = new Random();
 
             for (int x = 0; x < 64; x++)
             {
@@ -26,36 +27,66 @@ namespace MinecraftClone
                 {
                     for (int z = 0; z < 64; z++)
                     {
-                        Random random = new Random();
                         if (Terrain.SamplePoint(x, y, z, offset))
                         {
-                            chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 3));
+                            if (Terrain.SamplePoint(x, y + 3, z, offset) || y < 0 - offset.Y * 64)
+                            {
+                                if (random.Next(0, 250) == 0 && y < 0 - offset.Y * 64)
+                                {
+                                    chunk[x, y, z] = new BlockData(BlockName.Diamond, true, (BlockRotation)random.Next(0, 4));
+                                }
+                                else
+                                {
+                                    chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 4));
+                                }
+                            }
+                            else if (Terrain.SamplePoint(x, y + 2, z, offset))
+                            {
+                                if (random.Next(0, 2) > 0)
+                                {
+                                    chunk[x, y, z] = new BlockData(BlockName.Dirt, true, (BlockRotation)random.Next(0, 4));
+                                }
+                                else
+                                {
+                                    chunk[x, y, z] = new BlockData(BlockName.Stone, true, (BlockRotation)random.Next(0, 4));
+                                }
+                            }
+                            else if (Terrain.SamplePoint(x, y + 1, z, offset))
+                            {
+                                chunk[x, y, z] = new BlockData(BlockName.Dirt, true, (BlockRotation)random.Next(0, 4));
+                            }
+                            else
+                            {
+                                chunk[x, y, z] = new BlockData(BlockName.Grass, true, (BlockRotation)random.Next(0, 4));
+                            }
                         }
                         else
                         {
-                            chunk[x, y, z] = new BlockData(BlockName.Air, false, (BlockRotation)random.Next(0, 3));
+                            chunk[x, y, z] = new BlockData(BlockName.Air, false, BlockRotation.North);
                         }
                     }
                 }
             }
 
-            mesh = GenerateMesh();
+            mesh = GenerateMesh(offset * 64);
             chunk = null;
         }
 
-        private VoxelMesh GenerateMesh()
+        private VoxelMesh GenerateMesh(Vector3 Offset)
         {
             List<Vector3> newvertices = new List<Vector3>();
             List<uint> newindices = new List<uint>();
-            List<Vector2> newuvs = new List<Vector2>();
+            List<Vector3> newuvs = new List<Vector3>();
             List<float> newlights = new List<float>();
 
             uint offset = 0;
+            float light = 1;
 
             for (int x = 0; x < 64; x++)
             {
                 for (int y = 0; y < 64; y++)
                 {
+                    light = (y + Offset.Y + 128) / 128f;
                     for (int z = 0; z < 64; z++)
                     {
                         if (chunk[x, y, z].BlockIsSolid)
@@ -68,15 +99,15 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
                                 newvertices.Add(new Vector3(x, y + 1, z));
 
-                                newuvs.Add(new Vector2(0.0f, 1.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(0.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
+                                newuvs.Add(new Vector3(0.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
 
-                                newlights.Add(1f);
-                                newlights.Add(1f);
-                                newlights.Add(1f);
-                                newlights.Add(1f);
+                                newlights.Add(1f * light);
+                                newlights.Add(1f * light);
+                                newlights.Add(1f * light);
+                                newlights.Add(1f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -97,15 +128,15 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x + 1, y, z));
                                 newvertices.Add(new Vector3(x, y, z + 1));
 
-                                newuvs.Add(new Vector2(0.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.0f));
-                                newuvs.Add(new Vector2(0.0f, 0.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
+                                newuvs.Add(new Vector3(0.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
 
-                                newlights.Add(0f);
-                                newlights.Add(0f);
-                                newlights.Add(0f);
-                                newlights.Add(0f);
+                                newlights.Add(0f * light);
+                                newlights.Add(0f * light);
+                                newlights.Add(0f * light);
+                                newlights.Add(0f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -126,15 +157,26 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x, y, z + 1));
                                 newvertices.Add(new Vector3(x, y + 1, z));
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
 
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.West)
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                }
+                                else
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                }
+
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -155,15 +197,25 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x + 1, y, z));
                                 newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.East)
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                }
+                                else
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                }
 
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
-                                newlights.Add(0.5f);
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
+                                newlights.Add(0.5f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -184,15 +236,25 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x + 1, y, z + 1));
                                 newvertices.Add(new Vector3(x, y + 1, z + 1));
 
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 0.0f));
-                                newuvs.Add(new Vector2(0.5f, 0.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.North)
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                }
+                                else
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                }
 
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
-                                newlights.Add(0.75f);
+                                newlights.Add(0.75f * light);
+                                newlights.Add(0.75f * light);
+                                newlights.Add(0.75f * light);
+                                newlights.Add(0.75f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -213,15 +275,25 @@ namespace MinecraftClone
                                 newvertices.Add(new Vector3(x, y, z));
                                 newvertices.Add(new Vector3(x + 1, y + 1, z));
 
-                                newuvs.Add(new Vector2(0.5f, 1.0f));
-                                newuvs.Add(new Vector2(1.0f, 0.5f));
-                                newuvs.Add(new Vector2(0.5f, 0.5f));
-                                newuvs.Add(new Vector2(1.0f, 1.0f));
+                                if (chunk[x, y, z].BlockRotation == BlockRotation.South)
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                }
+                                else
+                                {
+                                    newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                    newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                }
 
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
-                                newlights.Add(0.25f);
+                                newlights.Add(0.25f * light);
+                                newlights.Add(0.25f * light);
+                                newlights.Add(0.25f * light);
+                                newlights.Add(0.25f * light);
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -263,7 +335,7 @@ namespace MinecraftClone
 
     public enum BlockName
     {
-        Air, Grass, Dirt, Stone, Iron, Bedrock,
+        Air, Grass, Dirt, Stone, Diamond, Bedrock,
     }
 
     public enum BlockRotation

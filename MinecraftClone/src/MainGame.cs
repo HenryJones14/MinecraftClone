@@ -14,13 +14,13 @@ namespace MinecraftClone
 
         NormalMesh MainMesh;
         Shader MainShader;
-        Texture MainTexture;
+        TextureSingle MainTexture;
 
         Shader VoxelShader;
-        Texture VoxelTexture;
+        TextureArray VoxelTextures;
 
         ChunkData[] Chunks;
-        public static readonly Vector3 WORLDSIZE = new Vector3(3, 2, 3);
+        public static readonly Vector3 WORLDSIZE = new Vector3(2, 3, 2);
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -60,15 +60,15 @@ namespace MinecraftClone
             VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
             VoxelShader.Use();
 
-            VoxelTexture = new Texture("textures/Minecraft/furnace.png");
-            VoxelTexture.Use();
+            VoxelTextures = new TextureArray(new string[] {"textures/Minecraft/grass.png", "textures/Minecraft/dirt.png", "textures/Minecraft/stone.png", "textures/Minecraft/ore.png", "textures/Minecraft/bedrock.png"});
+            VoxelTextures.Use();
 
             MainMesh = new NormalMesh();
 
             MainShader = new Shader("shaders/NormalShader.vert", "shaders/NormalShader.frag");
             MainShader.Use();
 
-            MainTexture = new Texture("textures/box.png");
+            MainTexture = new TextureSingle("textures/box.png");
             MainTexture.Use();
 
             MainCamera = new Camera((float)Width / (float)Height, 90);
@@ -120,7 +120,7 @@ namespace MinecraftClone
             VoxelShader.Use();
             VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
             VoxelShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
-            VoxelTexture.Use();
+            VoxelTextures.Use();
 
             for (int i = 0; i < Chunks.Length; i++)
             {
