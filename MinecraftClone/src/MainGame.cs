@@ -20,7 +20,7 @@ namespace MinecraftClone
         TextureArray VoxelTextures;
 
         ChunkData[] Chunks;
-        public static readonly Vector3 WORLDSIZE = new Vector3(2, 3, 2);
+        public static readonly Vector3 WORLDSIZE = new Vector3(5, 1, 5);
 
         public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
