@@ -1,10 +1,10 @@
 ﻿#version 330 core
 layout (location = 0) in vec3 pos;
 layout (location = 1) in vec3 uvs;
-layout (location = 2) in float nor;
+layout (location = 2) in vec3 nor;
 
 out vec3 uvpos;
-out float light;
+out vec3 light;
 
 uniform mat4 local;
 uniform mat4 world;

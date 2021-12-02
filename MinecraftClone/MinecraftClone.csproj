@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>MinecraftClone.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="models\objbox.obj">
@@ -75,6 +78,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="MinecraftClone.ico" />
     <Content Include="textures\arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
