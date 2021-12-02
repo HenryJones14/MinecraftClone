@@ -68,13 +68,13 @@
     <Compile Include="noise\SimplexNoise.cs" />
     <Compile Include="noise\Terrain.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="src\CameraManager.cs" />
-    <Compile Include="src\ChunkManager.cs" />
-    <Compile Include="src\MainGame.cs" />
-    <Compile Include="src\NormalMesh.cs" />
-    <Compile Include="src\ShaderManager.cs" />
-    <Compile Include="src\TextureManager.cs" />
-    <Compile Include="src\VoxelMesh.cs" />
+    <Compile Include="source\CameraManager.cs" />
+    <Compile Include="source\ChunkManager.cs" />
+    <Compile Include="source\MainGame.cs" />
+    <Compile Include="source\NormalMesh.cs" />
+    <Compile Include="source\ShaderManager.cs" />
+    <Compile Include="source\TextureManager.cs" />
+    <Compile Include="source\VoxelMesh.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
