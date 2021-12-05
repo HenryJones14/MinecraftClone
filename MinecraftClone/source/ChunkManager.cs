@@ -104,10 +104,10 @@ namespace MinecraftClone
                                 newuvs.Add(new Vector3(0.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
                                 newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
 
-                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y + 1, z), new Vector3(x + 1, y + 1, z - 1), new Vector3(x, y + 1, z - 1))));
-                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y + 1, z), new Vector3(x - 1, y + 1, z + 1), new Vector3(x, y + 1, z + 1))));
-                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y + 1, z + 1), new Vector3(x + 1, y + 1, z + 1), new Vector3(x + 1, y + 1, z))));
-                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y + 1, z - 1), new Vector3(x - 1, y + 1, z - 1), new Vector3(x - 1, y + 1, z))));
+                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
+                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
+                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
+                                newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -133,10 +133,10 @@ namespace MinecraftClone
                                 newuvs.Add(new Vector3(0.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
                                 newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
 
-                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y - 1, z), new Vector3(x + 1, y - 1, z + 1), new Vector3(x, y - 1, z + 1))));
-                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y - 1, z), new Vector3(x - 1, y - 1, z - 1), new Vector3(x, y - 1, z - 1))));
-                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y - 1, z), new Vector3(x + 1, y - 1, z - 1), new Vector3(x, y - 1, z - 1))));
-                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y - 1, z), new Vector3(x - 1, y - 1, z + 1), new Vector3(x, y - 1, z + 1))));
+                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                                newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -173,10 +173,10 @@ namespace MinecraftClone
                                     newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
                                 }
 
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y + 1, z), new Vector3(x - 1, y + 1, z + 1), new Vector3(x - 1, y, z + 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y - 1, z), new Vector3(x - 1, y - 1, z - 1), new Vector3(x - 1, y, z - 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y - 1, z), new Vector3(x - 1, y - 1, z + 1), new Vector3(x - 1, y, z + 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y + 1, z), new Vector3(x - 1, y + 1, z - 1), new Vector3(x - 1, y, z - 1))));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -212,10 +212,10 @@ namespace MinecraftClone
                                     newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
                                 }
 
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y + 1, z), new Vector3(x + 1, y + 1, z - 1), new Vector3(x + 1, y, z - 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y - 1, z), new Vector3(x + 1, y - 1, z + 1), new Vector3(x + 1, y, z + 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y - 1, z), new Vector3(x + 1, y - 1, z - 1), new Vector3(x + 1, y, z - 1))));
-                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y + 1, z), new Vector3(x + 1, y + 1, z + 1), new Vector3(x + 1, y, z + 1))));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                                newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -251,10 +251,10 @@ namespace MinecraftClone
                                     newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
                                 }
 
-                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y, z + 1), new Vector3(x + 1, y + 1, z + 1), new Vector3(x, y + 1, z + 1))));
-                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y, z + 1), new Vector3(x - 1, y - 1, z + 1), new Vector3(x, y - 1, z + 1))));
-                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y, z + 1), new Vector3(x + 1, y - 1, z + 1), new Vector3(x, y - 1, z + 1))));
-                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y, z + 1), new Vector3(x - 1, y + 1, z + 1), new Vector3(x, y + 1, z + 1))));
+                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
+                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
+                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                                newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -290,10 +290,10 @@ namespace MinecraftClone
                                     newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
                                 }
 
-                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y, z - 1), new Vector3(x - 1, y + 1, z - 1), new Vector3(x, y + 1, z - 1))));
-                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y, z - 1), new Vector3(x + 1, y - 1, z - 1), new Vector3(x, y - 1, z - 1))));
-                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x - 1, y, z - 1), new Vector3(x - 1, y - 1, z - 1), new Vector3(x, y - 1, z - 1))));
-                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x + 1, y, z - 1), new Vector3(x + 1, y + 1, z - 1), new Vector3(x, y + 1, z - 1))));
+                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
+                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                                newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
 
                                 newindices.Add(offset + 0);
                                 newindices.Add(offset + 1);
@@ -321,18 +321,142 @@ namespace MinecraftClone
             return !chunk[X, Y, Z].BlockIsSolid;
         }
 
-        private float CalculateAO(Vector3 LeftSide, Vector3 Corner, Vector3 RightSide)
+        private float CalculateAO(Vector3 Position, BlockCorner Corner)
         {
-            return AmbientOclusion(BlockIsSolid((int)LeftSide.X, (int)LeftSide.Y, (int)LeftSide.Z) ? 0 : 1, BlockIsSolid((int)RightSide.X, (int)RightSide.Y, (int)RightSide.Z) ? 0 : 1, BlockIsSolid((int)Corner.X, (int)Corner.Y, (int)Corner.Z) ? 0 : 1);
+            switch (Corner)
+            {
+                case BlockCorner.RightTopFront:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y + 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y + 1, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z + 1),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z + 1)
+                    });
+
+                case BlockCorner.LeftTopFront:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y + 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y + 1, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z + 1),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z + 1)
+                    });
+
+                case BlockCorner.RightBottomFront:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y - 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y - 1, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z + 1),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z + 1)
+                    });
+
+                case BlockCorner.LeftBottomFront:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y - 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y - 1, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z + 1),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z + 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z + 1)
+                    });
+
+                case BlockCorner.RightTopBask:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y + 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y + 1, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z - 1),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z - 1)
+                    });
+
+                case BlockCorner.LeftTopBask:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y + 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y + 1, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y + 1, (int)Position.Z - 1),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z - 1)
+                    });
+
+                case BlockCorner.RightBottomBask:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y - 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y - 1, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z - 1),
+
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X + 1, (int)Position.Y, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z - 1)
+                    });
+
+                case BlockCorner.LeftBottomBask:
+                    return AmbientOclusion(new bool[7]
+                    {
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y - 1, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y - 1, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y - 1, (int)Position.Z - 1),
+
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z),
+                        BlockIsSolid((int)Position.X - 1, (int)Position.Y, (int)Position.Z - 1),
+                        BlockIsSolid((int)Position.X, (int)Position.Y, (int)Position.Z - 1)
+                    });
+            }
+
+            return 0;
         }
 
-        private float AmbientOclusion(int side1, int side2, int corner)
+        private int AmbientOclusion(bool[] Sides)
         {
-            if (side1 == 1 && side2 == 1)
+            int count = -1;
+
+            for (int i = 0; i < Sides.Length; i++)
             {
-                return 0;
+                if (Sides[i])
+                {
+                    count++;
+                }
             }
-            return (3 - (side1 + side2 + corner)) * 0.33333f;
+
+            //count -= 1;
+            count = Math.Max(count, 0);
+
+            return count;
         }
 
         public void Render()
@@ -359,6 +483,12 @@ namespace MinecraftClone
             BlockIsSolid = IsBlockSolid;
             BlockRotation = NewBlockRotation;
         }
+    }
+
+    public enum BlockCorner
+    {
+        RightTopFront, LeftTopFront, RightBottomFront, LeftBottomFront,
+        RightTopBask, LeftTopBask, RightBottomBask, LeftBottomBask,
     }
 
     public enum BlockName

@@ -33,7 +33,7 @@ namespace MinecraftClone
 
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            GL.ClearColor(0.4921875f, 0.6640625f, 1, 1);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.DepthTest);
             GL.FrontFace(FrontFaceDirection.Cw);
@@ -48,7 +48,7 @@ namespace MinecraftClone
             VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
             VoxelShader.Use();
 
-            VoxelTextures = new TextureArray(new string[] {"textures/Minecraft/grass.png", "textures/Minecraft/dirt.png", "textures/Minecraft/stone.png", "textures/Minecraft/ore.png", "textures/Minecraft/bedrock.png"});
+            VoxelTextures = new TextureArray(new string[] {"textures/grass.png", "textures/dirt.png", "textures/stone.png", "textures/ore.png", "textures/bedrock.png"});
             VoxelTextures.Use();
 
             MainMesh = new NormalMesh();
@@ -56,7 +56,7 @@ namespace MinecraftClone
             MainShader = new Shader("shaders/NormalShader.vert", "shaders/NormalShader.frag");
             MainShader.Use();
 
-            MainTexture = new TextureSingle("textures/box.png");
+            MainTexture = new TextureSingle("textures/engine/box.png");
             MainTexture.Use();
 
             MainCamera = new Camera((float)Width / (float)Height, 90);
@@ -94,25 +94,37 @@ namespace MinecraftClone
             VoxelShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
             VoxelTextures.Use();
 
-            for (int x = 0; x < 1; x++)
+            if (canUpdate)
             {
-                for (int y = 0; y < 1; y++)
+                for (int x = 0; x < 1; x++)
                 {
-                    for (int z = 0; z < 1; z++)
+                    for (int y = 0; y < 1; y++)
                     {
-                        if (!Positions.Contains(pos + new Vector3(x, y, z)))
+                        for (int z = 0; z < 1; z++)
                         {
-                            Chunks.Add(new ChunkData(pos + new Vector3(x, y, z)));
-                            Positions.Add(pos + new Vector3(x, y, z));
+                            if (!Positions.Contains(pos + new Vector3(x, y, z)))
+                            {
+                                Chunks.Add(null);
+                                Positions.Add(pos + new Vector3(x, y, z));
+                            }
                         }
                     }
                 }
             }
 
-            for (int i = 0; i < Chunks.Count; i++)
+            bool newchunk = true;
+            for (int i = 0; i < Positions.Count; i++)
             {
-                VoxelShader.SetMatrix4x4("local", Matrix4.CreateTranslation(Chunks[i].chunkOffset * 64));
-                Chunks[i].Render();
+                if (Chunks[i] == null && newchunk)
+                {
+                    newchunk = false;
+                    Chunks[i] = new ChunkData(Positions[i]);;
+                }
+                else if (Chunks[i] != null)
+                {
+                    VoxelShader.SetMatrix4x4("local", Matrix4.CreateTranslation(Chunks[i].chunkOffset * 64));
+                    Chunks[i].Render();
+                }
             }
 
             Context.SwapBuffers();
@@ -145,6 +157,9 @@ namespace MinecraftClone
 
         #endregion
 
+        bool canUpdate = true;
+        bool toggle = true;
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             KeyboardState input = Keyboard.GetState();
@@ -152,6 +167,17 @@ namespace MinecraftClone
             base.OnUpdateFrame(e);
 
             float speed = 20;
+
+            if (input.IsKeyDown(Key.L) && toggle)
+            {
+                canUpdate = !canUpdate;
+                Console.WriteLine("Update chunks: " + canUpdate);
+                toggle = false;
+            }
+            else if (input.IsKeyUp(Key.L))
+            {
+                toggle = true;
+            }
 
             if (input.IsKeyDown(Key.W))
             {

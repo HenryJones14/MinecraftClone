@@ -86,7 +86,7 @@ namespace MinecraftClone
 
         public Matrix4 GetProjectionMatrix()
         {
-            return Matrix4.CreateScale(1, 1, -1) * Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), ratio, 0.1f, 1000.0f);
+            return Matrix4.CreateScale(1, 1, -1) * Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), ratio, 0.1f, 100.0f);
         }
 
         private void UpdateVectors()
