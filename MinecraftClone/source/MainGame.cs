@@ -48,7 +48,7 @@ namespace MinecraftClone
             VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
             VoxelShader.Use();
 
-            VoxelTextures = new TextureArray(new string[] {"textures/grass.png", "textures/dirt.png", "textures/stone.png", "textures/ore.png", "textures/bedrock.png"});
+            VoxelTextures = new TextureArray(new string[] {"textures/grass.png", "textures/dirt.png", "textures/stone.png", "textures/ore.png", "textures/bedrock.png", "textures/log.png", "textures/leaves.png", "textures/water.png", "textures/flowers.png" });
             VoxelTextures.Use();
 
             MainMesh = new NormalMesh();
@@ -127,9 +127,11 @@ namespace MinecraftClone
                 }
             }
 
+            Console.WriteLine(1 / e.Time);
+
             Context.SwapBuffers();
-            base.OnRenderFrame(e);
             time += (float)e.Time;
+            base.OnRenderFrame(e);
         }
 
         protected override void OnUnload(EventArgs e)

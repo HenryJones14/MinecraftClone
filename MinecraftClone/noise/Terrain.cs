@@ -9,9 +9,9 @@ namespace Noise
 {
     public static class Terrain
     {
-        static OpenSimplexNoise noise;
+        public static OpenSimplexNoise noise;
 
-        public static bool SamplePoint(float X, float Y, float Z, Vector3 ChunkOffset)
+        public static TerrainType SamplePoint(float X, float Y, float Z, Vector3 ChunkOffset)
         {
             if (noise == null)
             {
@@ -22,16 +22,32 @@ namespace Noise
             float hils = (float)(noise.Evaluate((X + ChunkOffset.X * 64) / 250f, 0, (Z + ChunkOffset.Z * 64) / 250f) + 1);
             hils = ((hils * hils * hils) + hils) * 0.2f;
 
-            if (Y + (ChunkOffset.Y * 64) < 64 * hils * 2 * val)
+            if (Y + (ChunkOffset.Y * 64) < 64 * (hils * 2 * val) - 16)
             {
-                val = (val * 0.5f + 1) - ((float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 20f, (Y + ChunkOffset.Y * 64) / 20f, (Z + ChunkOffset.Z * 64) / 20f)) * 0.7f + (float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 10f, (Y + ChunkOffset.Y * 64) / 10f, (Z + ChunkOffset.Z * 64) / 10f)) * 0.3f);
+                val = MathHelper.Clamp((Y + ChunkOffset.Y * 64 + 64 + 16) / 64f, 1, 2) - ((float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 20f, (Y + ChunkOffset.Y * 64) / 20f, (Z + ChunkOffset.Z * 64) / 20f)) * 0.7f + (float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 10f, (Y + ChunkOffset.Y * 64) / 10f, (Z + ChunkOffset.Z * 64) / 10f)) * 0.3f);
+            }
+            else if (Y + (ChunkOffset.Y * 64) < 0)
+            {
+                return TerrainType.Fluid;
             }
             else
             {
-                val = 0;
+                return TerrainType.None;
             }
 
-            return val > 0.7f;
+            if (val > 0.7f)
+            {
+                return TerrainType.Terrain;
+            }
+            else
+            {
+                return TerrainType.Space;
+            }
         }
+    }
+
+    public enum TerrainType
+    {
+        None, Terrain, Fluid, Space,
     }
 }

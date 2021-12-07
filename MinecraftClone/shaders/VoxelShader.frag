@@ -2,17 +2,17 @@
 out vec4 FragColor;
 
 in vec3 uvpos;
-in vec3 light;
+in float light;
 
 uniform sampler2DArray texture0;
 
 void main()
 {
     FragColor = texture(texture0, vec3(uvpos));
+    if(FragColor.a < 0.5){discard;}
     vec3 col = FragColor.rgb;
-    float lit = (light.x * 0.5f + 0.5f) * clamp((light.y + 256) / 256, 0, 1) * ((min(light.z, 3) / 3) * 0.6f + 0.4f);
 
-    FragColor = vec4(mix(col, col * lit, FragColor.a), 1);
+    FragColor = vec4(mix(col, col * light, FragColor.a), 1);
 
     float ndc = gl_FragCoord.z * 2.0 - 1.0;
     float near = 0.1f;
