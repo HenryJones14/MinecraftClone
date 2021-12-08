@@ -24,7 +24,7 @@ namespace MinecraftClone
         List<Vector3> Positions;
         List<ChunkData> Chunks;
 
-        public MainGame(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
+        public MainGame(int width, int height, string title) : base(width, height, new GraphicsMode(10, 10, 0, 16), title)
         {
             Console.WriteLine("Window created: ({0}, {1})", width, height);
         }
@@ -37,6 +37,11 @@ namespace MinecraftClone
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.DepthTest);
             GL.FrontFace(FrontFaceDirection.Cw);
+
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            GL.Enable(EnableCap.Multisample);
 
             //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
             //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);

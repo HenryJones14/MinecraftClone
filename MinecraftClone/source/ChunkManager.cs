@@ -40,7 +40,7 @@ namespace MinecraftClone
                                 break;
 
                             case TerrainType.Fluid:
-                                chunk[x, y, z] = new BlockData(BlockName.Water, RenderType.Block, BlockRotation.North);
+                                chunk[x, y, z] = new BlockData(BlockName.Water, RenderType.Liquid, BlockRotation.North);
                                 break;
 
                             case TerrainType.Space:
@@ -399,13 +399,234 @@ namespace MinecraftClone
                                 offset += 4;
                             }
                         }
-                        else if (chunk[x, y, z].RenderType == RenderType.Transparent)
+                    }
+                }
+            };
+
+            for (int x = 0; x < 64; x++)
+            {
+                for (int y = 0; y < 64; y++)
+                {
+                    for (int z = 0; z < 64; z++)
+                    {
+                        if (chunk[x, y, z].RenderType == RenderType.Transparent)
                         {
                             // up
-                                newvertices.Add(new Vector3(x + 1, y + 1, z));
-                                newvertices.Add(new Vector3(x, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
-                                newvertices.Add(new Vector3(x, y + 1, z));
+                            newvertices.Add(new Vector3(x + 1, y + 1, z));
+                            newvertices.Add(new Vector3(x, y + 1, z + 1));
+                            newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
+                            newvertices.Add(new Vector3(x, y + 1, z));
+
+                            newuvs.Add(new Vector3(0.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+
+                            newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
+                            newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
+                            newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
+                            newlights.Add(new Vector3(1f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+
+                            // down
+                            newvertices.Add(new Vector3(x + 1, y, z + 1));
+                            newvertices.Add(new Vector3(x, y, z));
+                            newvertices.Add(new Vector3(x + 1, y, z));
+                            newvertices.Add(new Vector3(x, y, z + 1));
+
+                            newuvs.Add(new Vector3(0.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                            newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+
+                            newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                            newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                            newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                            newlights.Add(new Vector3(0f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+
+                            // Left
+                            newvertices.Add(new Vector3(x, y + 1, z + 1));
+                            newvertices.Add(new Vector3(x, y, z));
+                            newvertices.Add(new Vector3(x, y, z + 1));
+                            newvertices.Add(new Vector3(x, y + 1, z));
+
+
+                            if (chunk[x, y, z].BlockRotation == BlockRotation.West)
+                            {
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+                            else
+                            {
+                                newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+
+                            // Right
+                            newvertices.Add(new Vector3(x + 1, y + 1, z));
+                            newvertices.Add(new Vector3(x + 1, y, z + 1));
+                            newvertices.Add(new Vector3(x + 1, y, z));
+                            newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
+
+                            if (chunk[x, y, z].BlockRotation == BlockRotation.East)
+                            {
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+                            else
+                            {
+                                newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                            newlights.Add(new Vector3(0.5f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+
+                            // Front
+                            newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
+                            newvertices.Add(new Vector3(x, y, z + 1));
+                            newvertices.Add(new Vector3(x + 1, y, z + 1));
+                            newvertices.Add(new Vector3(x, y + 1, z + 1));
+
+                            if (chunk[x, y, z].BlockRotation == BlockRotation.North)
+                            {
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+                            else
+                            {
+                                newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+
+                            newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopFront)));
+                            newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomFront)));
+                            newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomFront)));
+                            newlights.Add(new Vector3(0.75f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopFront)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+
+                            // Back
+                            newvertices.Add(new Vector3(x, y + 1, z));
+                            newvertices.Add(new Vector3(x + 1, y, z));
+                            newvertices.Add(new Vector3(x, y, z));
+                            newvertices.Add(new Vector3(x + 1, y + 1, z));
+
+                            if (chunk[x, y, z].BlockRotation == BlockRotation.South)
+                            {
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+                            else
+                            {
+                                newuvs.Add(new Vector3(0.5f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
+                                newuvs.Add(new Vector3(1.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
+                            }
+
+                            newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftTopBask)));
+                            newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightBottomBask)));
+                            newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.LeftBottomBask)));
+                            newlights.Add(new Vector3(0.25f, y + chunkOffset.Y * 64, CalculateAO(new Vector3(x, y, z), BlockCorner.RightTopBask)));
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 1);
+                            newindices.Add(offset + 2);
+
+                            newindices.Add(offset + 0);
+                            newindices.Add(offset + 3);
+                            newindices.Add(offset + 1);
+
+                            offset += 4;
+                        }
+                    }
+                }
+            };
+
+            for (int x = 0; x < 64; x++)
+            {
+                for (int y = 0; y < 64; y++)
+                {
+                    for (int z = 0; z < 64; z++)
+                    {
+                        if (chunk[x, y, z].RenderType == RenderType.Liquid)
+                        {
+                            // up
+                            if (W_BlockIsSolid(x, y + 1, z))
+                            {
+                                newvertices.Add(new Vector3(x + 1, y + 0.78125f, z));
+                                newvertices.Add(new Vector3(x, y + 0.78125f, z + 1));
+                                newvertices.Add(new Vector3(x + 1, y + 0.78125f, z + 1));
+                                newvertices.Add(new Vector3(x, y + 0.78125f, z));
 
                                 newuvs.Add(new Vector3(0.0f, 1.0f, (int)chunk[x, y, z].BlockName - 1));
                                 newuvs.Add(new Vector3(0.5f, 0.5f, (int)chunk[x, y, z].BlockName - 1));
@@ -426,8 +647,11 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
 
                             // down
+                            if (W_BlockIsSolid(x, y - 1, z))
+                            {
                                 newvertices.Add(new Vector3(x + 1, y, z + 1));
                                 newvertices.Add(new Vector3(x, y, z));
                                 newvertices.Add(new Vector3(x + 1, y, z));
@@ -452,8 +676,11 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
 
                             // Left
+                            if (W_BlockIsSolid(x - 1, y, z))
+                            {
                                 newvertices.Add(new Vector3(x, y + 1, z + 1));
                                 newvertices.Add(new Vector3(x, y, z));
                                 newvertices.Add(new Vector3(x, y, z + 1));
@@ -489,8 +716,11 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
 
                             // Right
+                            if (W_BlockIsSolid(x + 1, y, z))
+                            {
                                 newvertices.Add(new Vector3(x + 1, y + 1, z));
                                 newvertices.Add(new Vector3(x + 1, y, z + 1));
                                 newvertices.Add(new Vector3(x + 1, y, z));
@@ -525,8 +755,11 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
 
                             // Front
+                            if (W_BlockIsSolid(x, y, z + 1))
+                            {
                                 newvertices.Add(new Vector3(x + 1, y + 1, z + 1));
                                 newvertices.Add(new Vector3(x, y, z + 1));
                                 newvertices.Add(new Vector3(x + 1, y, z + 1));
@@ -561,8 +794,11 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
 
                             // Back
+                            if (W_BlockIsSolid(x, y, z - 1))
+                            {
                                 newvertices.Add(new Vector3(x, y + 1, z));
                                 newvertices.Add(new Vector3(x + 1, y, z));
                                 newvertices.Add(new Vector3(x, y, z));
@@ -597,8 +833,19 @@ namespace MinecraftClone
                                 newindices.Add(offset + 1);
 
                                 offset += 4;
+                            }
                         }
-                        else if (chunk[x, y, z].RenderType == RenderType.Model)
+                    }
+                }
+            };
+
+            for (int x = 0; x < 64; x++)
+            {
+                for (int y = 0; y < 64; y++)
+                {
+                    for (int z = 0; z < 64; z++)
+                    {
+                        if (chunk[x, y, z].RenderType == RenderType.Model)
                         {
                             for (int i = 0; i < 4; i++)
                             {
@@ -673,6 +920,7 @@ namespace MinecraftClone
                     }
                 }
             }
+
             mesh = new VoxelMesh(newvertices.Count(), newvertices.ToArray(), newindices.ToArray(), newuvs.ToArray(), newlights.ToArray());
         }
 
@@ -683,6 +931,15 @@ namespace MinecraftClone
                 return true;
             }
             return chunk[X, Y, Z].RenderType != RenderType.Block;
+        }
+
+        private bool W_BlockIsSolid(int X, int Y, int Z)
+        {
+            if (X < 0 || X >= 64 || Y < 0 || Y >= 64 || Z < 0 || Z >= 64)
+            {
+                return true;
+            }
+            return chunk[X, Y, Z].RenderType != RenderType.Liquid;
         }
 
         private bool AO_BlockIsSolid(int X, int Y, int Z)
@@ -877,7 +1134,7 @@ namespace MinecraftClone
 
     public enum RenderType
     {
-        None, Block, Transparent, Foliage, Model
+        None, Block, Transparent, Foliage, Model, Liquid
     }
 
     public enum BlockRotation
