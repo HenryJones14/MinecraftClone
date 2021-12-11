@@ -19,12 +19,12 @@ namespace Noise
             }
 
             float val = (float)(Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 150f, 0, (Z + ChunkOffset.Z * 64) / 150f)) * 0.7f + ((noise.Evaluate((X + ChunkOffset.X * 64) / 15f, 0, (Z + ChunkOffset.Z * 64) / 15f) + 1) * 0.5f) * 0.3f);
-            float hils = (float)(noise.Evaluate((X + ChunkOffset.X * 64) / 250f, 0, (Z + ChunkOffset.Z * 64) / 250f) + 1);
-            hils = ((hils * hils * hils) + hils) * 0.2f;
+            float hils = (float)(noise.Evaluate((X + ChunkOffset.X * 64) / 250f, 0, (Z + ChunkOffset.Z * 64) / 250f));
+            hils = (hils * hils * hils - hils) * 3f + 0.5f;
 
-            if (Y + (ChunkOffset.Y * 64) < 64 * (hils * 2 * val) - 16)
+            if (Y + (ChunkOffset.Y * 64) <= 64 * val * hils)
             {
-                val = MathHelper.Clamp((Y + ChunkOffset.Y * 64 + 64 + 16) / 64f, 1, 2) - ((float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 20f, (Y + ChunkOffset.Y * 64) / 20f, (Z + ChunkOffset.Z * 64) / 20f)) * 0.7f + (float)Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 10f, (Y + ChunkOffset.Y * 64) / 10f, (Z + ChunkOffset.Z * 64) / 10f)) * 0.3f);
+                val = 1.5f - (float)(Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 25f, (Y + ChunkOffset.Y * 64) / 25f, (Z + ChunkOffset.Z * 64) / 25f)) + ((noise.Evaluate((X + ChunkOffset.X * 64) / 10f, (Y + ChunkOffset.Y * 64) / 10f, (Z + ChunkOffset.Z * 64) / 10f) + 1) * 0.4f));
             }
             else if (Y + (ChunkOffset.Y * 64) < 0)
             {
@@ -32,10 +32,10 @@ namespace Noise
             }
             else
             {
-                return TerrainType.None;
+                return TerrainType.None; 
             }
 
-            if (val > 0.7f)
+            if (val > 0.5f)
             {
                 return TerrainType.Terrain;
             }

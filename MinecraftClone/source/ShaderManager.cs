@@ -71,7 +71,12 @@ namespace MinecraftClone
 
         public void SetVector3(string ValueName, Vector3 Vector)
         {
-            GL.Uniform3(GL.GetUniformLocation(Handle, ValueName), ref Vector);
+            GL.Uniform3(GL.GetUniformLocation(Handle, ValueName), Vector);
+        }
+
+        public void SetFloat(string ValueName, float Float)
+        {
+            GL.Uniform1(GL.GetUniformLocation(Handle, ValueName), Float);
         }
 
         // Destroy shader
