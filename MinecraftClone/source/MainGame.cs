@@ -17,7 +17,6 @@ namespace MinecraftClone
         NormalMesh MainMesh;
         Shader MainShader;
         TextureSingle MainTexture;
-        TextureSingle SunTexture;
 
         Shader VoxelShader;
         TextureArray VoxelTextures;
@@ -25,12 +24,9 @@ namespace MinecraftClone
         List<Vector3> Positions;
         List<ChunkData> Chunks;
 
-        float time = 0;
-
         public MainGame(int width, int height, string title) : base(width, height, new GraphicsMode(10, 10, 0, 16), title)
         {
             Console.WriteLine("Window created: ({0}, {1})", width, height);
-            Console.WriteLine("\n");
         }
 
         #region Rendering
@@ -54,10 +50,10 @@ namespace MinecraftClone
             Positions = new List<Vector3>();
             Chunks = new List<ChunkData>();
 
-            VoxelShader = new Shader("shaders/BasicVoxelShader.vert", "shaders/BasicVoxelShader.frag");
+            VoxelShader = new Shader("shaders/VoxelShader.vert", "shaders/VoxelShader.frag");
             VoxelShader.Use();
 
-            VoxelTextures = new TextureArray(new string[] {"textures/grass.png", "textures/dirt.png", "textures/stone.png", "textures/ore.png", "textures/bedrock.png", "textures/log.png", "textures/leaves.png", "textures/water.png", "textures/flowers.png", "textures/sand.png" });
+            VoxelTextures = new TextureArray(new string[] {"textures/grass.png", "textures/dirt.png", "textures/stone.png", "textures/ore.png", "textures/bedrock.png", "textures/log.png", "textures/leaves.png", "textures/water.png", "textures/flowers.png" });
             VoxelTextures.Use();
 
             MainMesh = new NormalMesh();
@@ -68,13 +64,11 @@ namespace MinecraftClone
             MainTexture = new TextureSingle("textures/engine/box.png");
             MainTexture.Use();
 
-            SunTexture = new TextureSingle("textures/sun.png");
-            SunTexture.Use();
-
             MainCamera = new Camera((float)Width / (float)Height, 90);
 
             base.OnLoad(e);
         }
+
 
         protected override void OnUnload(EventArgs e)
         {
@@ -101,27 +95,14 @@ namespace MinecraftClone
 
         #endregion
 
+        float time = 0;
         bool canUpdate = true;
         bool toggle = true;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            // Render
-            Vector3 sun = new Vector3(-(float)Math.Cos(time * 0.1f) * 0.2f, (float)Math.Sin(time * 0.1f), (float)Math.Cos(time * 0.1f)).Normalized();
-            Vector3 col = Vector3.Lerp(new Vector3(0.4921875f, 0.6640625f, 1), Vector3.Zero, 1 - (sun.Y + 1) * 0.5f);
-
-            GL.ClearColor(col.X, col.Y, col.Z, 1);
+            // Rendering
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            GL.DepthFunc(DepthFunction.Always);
-            SunTexture.Use();
-            MainShader.Use();
-            MainShader.SetMatrix4x4("local", Matrix4.CreateTranslation(MainCamera.Position) * Matrix4.CreateTranslation(sun * 5));
-            MainMesh.RenderMesh();
-            GL.DepthFunc(DepthFunction.Lequal);
-
-
-            GL.Clear(ClearBufferMask.DepthBufferBit);
 
             MainShader.Use();
             MainShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
@@ -145,8 +126,6 @@ namespace MinecraftClone
             VoxelShader.Use();
             VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
             VoxelShader.SetMatrix4x4("world", MainCamera.GetViewMatrix());
-            VoxelShader.SetVector3("sunangle", sun);
-            VoxelShader.SetFloat("suncol", 1 - (sun.Y + 1) * 0.5f);
             VoxelTextures.Use();
 
             if (canUpdate)
@@ -187,6 +166,7 @@ namespace MinecraftClone
             // Input
             KeyboardState input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape)) { Exit(); }
+            base.OnUpdateFrame(e);
 
             float speed = 20;
 
@@ -251,12 +231,11 @@ namespace MinecraftClone
                 MainCamera.Rotate(0, (float)e.Time * -9 * speed);
             }
 
-            //fps counter
-            int yes = Console.CursorLeft;
-            int no = Console.CursorTop;
+            // Fps Counter
+            int CursorLine = Console.CursorTop;
             Console.SetCursorPosition(0, 1);
             Console.WriteLine("fps: " + (int)(1 / e.Time) + "                               ");
-            Console.SetCursorPosition(yes, no);
+            Console.SetCursorPosition(0, CursorLine);
 
             base.OnUpdateFrame(e);
             time += (float)e.Time;

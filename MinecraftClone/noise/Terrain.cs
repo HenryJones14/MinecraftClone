@@ -22,6 +22,11 @@ namespace Noise
             float hils = (float)(noise.Evaluate((X + ChunkOffset.X * 64) / 250f, 0, (Z + ChunkOffset.Z * 64) / 250f));
             hils = (hils * hils * hils - hils) * 3f + 0.5f;
 
+            if (hils > 0)
+            {
+                hils *= (float)(noise.Evaluate((X + ChunkOffset.X * 64) / 500f, 0, (Z + ChunkOffset.Z * 64) / 500f) + 1) * 0.5f;
+            }
+
             if (Y + (ChunkOffset.Y * 64) <= 64 * val * hils)
             {
                 val = 1.5f - (float)(Math.Abs(noise.Evaluate((X + ChunkOffset.X * 64) / 25f, (Y + ChunkOffset.Y * 64) / 25f, (Z + ChunkOffset.Z * 64) / 25f)) + ((noise.Evaluate((X + ChunkOffset.X * 64) / 10f, (Y + ChunkOffset.Y * 64) / 10f, (Z + ChunkOffset.Z * 64) / 10f) + 1) * 0.4f));
