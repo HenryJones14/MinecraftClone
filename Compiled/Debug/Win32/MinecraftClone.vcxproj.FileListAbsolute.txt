@@ -1,5 +1,0 @@
-C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\textures\Compliance-32x-Java-Beta-17.zip
-C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\shaders\NormalShader.frag
-C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\shaders\NormalShader.vert
-C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\shaders\shader.frag
-C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\shaders\shader.vert
