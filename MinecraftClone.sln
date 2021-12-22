@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MinecraftClone", "MinecraftClone\MinecraftClone.vcxproj", "{877592F1-10A3-463A-A6D7-086CE5F1A6F0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MinecraftClone", "MinecraftClone\MinecraftClone.vcxproj", "{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Debug|x64.ActiveCfg = Debug|x64
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Debug|x64.Build.0 = Debug|x64
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Debug|x86.ActiveCfg = Debug|Win32
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Debug|x86.Build.0 = Debug|Win32
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Release|x64.ActiveCfg = Release|x64
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Release|x64.Build.0 = Release|x64
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Release|x86.ActiveCfg = Release|Win32
-		{877592F1-10A3-463A-A6D7-086CE5F1A6F0}.Release|x86.Build.0 = Release|Win32
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Debug|x64.ActiveCfg = Debug|x64
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Debug|x64.Build.0 = Debug|x64
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Debug|x86.ActiveCfg = Debug|Win32
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Debug|x86.Build.0 = Debug|Win32
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Release|x64.ActiveCfg = Release|x64
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Release|x64.Build.0 = Release|x64
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Release|x86.ActiveCfg = Release|Win32
+		{09362649-DFC4-4EC2-972D-BDA24A6AE8CC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {983ED5FB-4234-4770-A172-8590FBB1BFBF}
+		SolutionGuid = {DFDA9947-7B61-4281-8522-9DB155252FF2}
 	EndGlobalSection
 EndGlobal

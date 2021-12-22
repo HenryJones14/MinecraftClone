@@ -1,0 +1,4 @@
+﻿  EntryPoint.cpp
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\source\EntryPoint.cpp(10,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\source\EntryPoint.cpp(11,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  MinecraftClone.vcxproj -> C:\Users\doman\Documents\GitHub\MinecraftClone\Linked\Debug\Win32\MinecraftClone.exe

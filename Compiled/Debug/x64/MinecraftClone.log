@@ -1,0 +1,43 @@
+﻿  NormalMesh.cpp
+  Shader.cpp
+  EntryPoint.cpp
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\source\EntryPoint.cpp(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\doman\Documents\GitHub\MinecraftClone\MinecraftClone\source\EntryPoint.cpp(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewBindBuffer
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewBufferData
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewDeleteBuffers
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewGenBuffers
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewEnableVertexAttribArray
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewVertexAttribPointer
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewBindVertexArray
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewDeleteVertexArrays
+NormalMesh.obj : error LNK2001: unresolved external symbol __glewGenVertexArrays
+Shader.obj : error LNK2001: unresolved external symbol __glewAttachShader
+Shader.obj : error LNK2001: unresolved external symbol __glewCompileShader
+Shader.obj : error LNK2001: unresolved external symbol __glewCreateProgram
+Shader.obj : error LNK2001: unresolved external symbol __glewCreateShader
+Shader.obj : error LNK2001: unresolved external symbol __glewDeleteProgram
+Shader.obj : error LNK2001: unresolved external symbol __glewDeleteShader
+Shader.obj : error LNK2001: unresolved external symbol __glewGetProgramInfoLog
+Shader.obj : error LNK2001: unresolved external symbol __glewGetProgramiv
+Shader.obj : error LNK2001: unresolved external symbol __glewGetShaderInfoLog
+Shader.obj : error LNK2001: unresolved external symbol __glewGetShaderiv
+Shader.obj : error LNK2001: unresolved external symbol __glewGetUniformLocation
+Shader.obj : error LNK2001: unresolved external symbol __glewLinkProgram
+Shader.obj : error LNK2001: unresolved external symbol __glewShaderSource
+Shader.obj : error LNK2001: unresolved external symbol __glewUniform1f
+Shader.obj : error LNK2001: unresolved external symbol __glewUniform1i
+Shader.obj : error LNK2001: unresolved external symbol __glewUseProgram
+EntryPoint.obj : error LNK2019: unresolved external symbol glewInit referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glewGetErrorString referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwInit referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwWindowShouldClose referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function main
+EntryPoint.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function main
+C:\Users\doman\Documents\GitHub\MinecraftClone\\Libraries\GLEW\glew32s.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Users\doman\Documents\GitHub\MinecraftClone\\Libraries\GLFW\glfw3.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Users\doman\Documents\GitHub\MinecraftClone\\Linked\Debug\x64\MinecraftClone.exe : fatal error LNK1120: 34 unresolved externals
