@@ -2,21 +2,6 @@
 
 #include <iostream>
 
-Camera::Camera()
-{
-	fov = 90;
-	ratio = 16.0f / 9.0f;
-
-	position = glm::vec3(0, 0, 0);
-
-	rightdir = glm::vec3(1, 0, 0);
-	topdir = glm::vec3(0, 1, 0);
-	frontdir = glm::vec3(0, 0, 1);
-
-	yaw = 90;
-	pitch = 0;
-}
-
 Camera::Camera(float Ratio, int FOV)
 {
 	fov = FOV;
@@ -24,12 +9,14 @@ Camera::Camera(float Ratio, int FOV)
 
 	position = glm::vec3(0, 0, 0);
 
-	rightdir = glm::vec3(1, 0, 0);
-	topdir = glm::vec3(0, 1, 0);
-	frontdir = glm::vec3(0, 0, 1);
+	//rightdir = glm::vec3(-1, 0, 0);
+	//topdir = glm::vec3(0, 1, 0);
+	//frontdir = glm::vec3(0, 0, 1);
 
 	yaw = 90;
 	pitch = 0;
+
+	UpdateVectors();
 }
 
 void Camera::ChangeFOV(float Ratio, int FOV)
@@ -50,30 +37,37 @@ glm::mat4 Camera::GetViewMatrix()
 
 glm::mat4 Camera::GetProjectionMatrix()
 {
-	return glm::perspective(glm::radians((float)fov), ratio, 0.1f, 100.0f);
+	return glm::perspective(glm::radians((float)fov), ratio, 0.1f, 100.0f) * glm::scale(glm::mat4(1), glm::vec3(-1, 1, 1));
 }
 
-void Camera::MoveCamera(float MoveX, float MoveY, float MoveZ)
+void Camera::LocalMoveCamera(float MoveX, float MoveY, float MoveZ)
 {
-	position += rightdir * MoveX;
+	position -= rightdir * MoveX;
 	position += topdir * MoveY;
 	position += frontdir * MoveZ;
 
 	UpdateVectors();
 }
 
-void Camera::RotateCamera(float RotateYaw, float RotatePitch)
+void Camera::GlobalMoveCamera(float MoveX, float MoveY, float MoveZ)
 {
-	yaw += glm::radians(RotateYaw);
-	pitch += glm::radians(RotatePitch);
+	position -= MoveX;
+	position += MoveY;
+	position += MoveZ;
+
+	UpdateVectors();
+}
+
+void Camera::LocalRotateCamera(float RotateYaw, float RotatePitch)
+{
+	yaw -= RotateYaw;
+	pitch += RotatePitch;
 
 	UpdateVectors();
 }
 
 void Camera::UpdateVectors()
 {
-	std::cout << position.x << ", " << position.y << ", " << position.z << std::endl;
-
 	// calculate the new Front vector
 	glm::vec3 front;
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -84,4 +78,6 @@ void Camera::UpdateVectors()
 	// also re-calculate the Right and Up vector
 	rightdir = glm::normalize(glm::cross(frontdir, glm::vec3(0.0f, 1.0f, 0.0f)));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 	topdir = glm::normalize(glm::cross(rightdir, frontdir));
+
+	std::cout << "X:" << (int)(position.x * 100) / 100.0f << ", Y:" << (int)(position.y * 100) / 100.0f << ", Z:" << (int)(position.z * 100) / 100.0f << std::endl;
 }

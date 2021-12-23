@@ -10,6 +10,8 @@ uniform mat4 object;
 
 void main()
 {
+//                  vec4(pos, 1.0f) * local * world * projection;
 	gl_Position = projection * view * object * vec4(aPos, 1.0);
+	//gl_Position = vec4(aPos, 1.0) * object * view * projection;
 	color = col;
 }

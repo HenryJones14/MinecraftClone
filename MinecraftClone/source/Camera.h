@@ -16,8 +16,10 @@ public:
 	glm::mat4 GetViewMatrix();
 	glm::mat4 GetProjectionMatrix();
 
-	void MoveCamera(float, float, float);
-	void RotateCamera(float, float);
+	void LocalMoveCamera(float, float, float);
+	void LocalRotateCamera(float, float);
+
+	void GlobalMoveCamera(float, float, float);
 
 private:
 	glm::vec3 position;
