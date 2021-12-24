@@ -15,6 +15,8 @@ void keyCallback(GLFWwindow*, int, int, int, int);
 
 float inx = 0, iny = 0, inz = 0, inya = 0, inpi = 0;
 
+int style = 0;
+
 int main(void)
 {
     GLFWwindow* window;
@@ -44,16 +46,18 @@ int main(void)
     glfwSetKeyCallback(window, keyCallback);
 
     glClearColor(0.4921875f, 0.6640625f, 1, 1);
-    Shader MainShader = Shader("shaders/shader.vert", "shaders/shader.frag");
+    glClearColor(0, 0, 0, 1);
+    Shader MainShader = Shader("shaders/NormalShader.vert", "shaders/NormalShader.frag");
     NormalMesh MainMesh = NormalMesh();
     Camera MainCamera = Camera(16.0f / 9.0f, 90);
     MainCamera.GlobalMoveCamera(1, 1, 1);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
-    glFrontFace(GL_CCW);
+    glFrontFace(GL_CW);
 
     glEnable(GL_DEPTH_TEST);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -67,6 +71,9 @@ int main(void)
         MainShader.SetMatrix4x4("object", glm::mat4(1.0f));
         MainShader.SetMatrix4x4("view", MainCamera.GetViewMatrix());
         MainShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
+
+        MainShader.SetInt("style", style);
+
         MainMesh.RenderMesh();
 
         /* Swap front and back buffers */
@@ -176,5 +183,18 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
     {
         inpi += 1;
+    }
+
+
+
+
+
+    if (key == GLFW_KEY_I && action == GLFW_PRESS)
+    {
+        style += 1;
+    }
+    if (key == GLFW_KEY_O && action == GLFW_PRESS)
+    {
+        style -= 1;
     }
 }

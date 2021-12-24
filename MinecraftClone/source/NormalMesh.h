@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -16,5 +18,6 @@ private:
     unsigned int VertexBufferObject = 0;
     unsigned int ElementBufferObject = 0;
 
-    unsigned int IndiceCount = 0;
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
 };

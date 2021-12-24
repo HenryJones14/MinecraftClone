@@ -170,19 +170,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\MeshLoader.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\NormalMesh.cpp" />
     <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="source\EntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\MeshLoader.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\NormalMesh.h" />
     <ClInclude Include="source\Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.frag" />
-    <None Include="shaders\shader.vert" />
+    <None Include="models\monke.json" />
     <None Include="shaders\NormalShader.frag">
       <DeploymentContent>false</DeploymentContent>
     </None>

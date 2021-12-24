@@ -1,18 +1,22 @@
 ﻿#version 330 core
 layout (location = 0) in vec3 pos;
-layout (location = 1) in vec2 uvs;
-layout (location = 2) in vec3 nor;
+layout (location = 1) in vec3 nor;
+layout (location = 2) in vec4 col;
+layout (location = 3) in vec2 uvs;
 
-out vec2 uvpos;
-out vec3 normal;
-
-uniform mat4 local;
-uniform mat4 world;
+uniform mat4 object;
+uniform mat4 view;
 uniform mat4 projection;
+
+out vec3 Normal;
+out vec4 Color;
+out vec2 UVs;
 
 void main()
 {
-    gl_Position = vec4(pos, 1.0f) * local * world * projection;
-    normal = normalize(nor);
-    uvpos = uvs;
+    gl_Position = projection * view * object * vec4(pos, 1.0);
+
+    Normal = normalize(nor);
+    Color = clamp(col, 0, 1);
+    UVs = uvs;
 }
