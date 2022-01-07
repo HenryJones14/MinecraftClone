@@ -107,7 +107,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC; WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Includes;$(SolutionDir)\MinecraftClone\source</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,7 +125,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC; WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Includes;$(SolutionDir)\MinecraftClone\source</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,7 +143,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC; _DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Includes;$(SolutionDir)\MinecraftClone\source</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,7 +161,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC; NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Includes;$(SolutionDir)\MinecraftClone\source</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,19 +174,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\MeshLoader.cpp" />
-    <ClCompile Include="source\Camera.cpp" />
-    <ClCompile Include="source\NormalMesh.cpp" />
-    <ClCompile Include="source\Shader.cpp" />
+    <ClCompile Include="source\Miscellaneous\ChunkGenerator.cpp" />
+    <ClCompile Include="source\MainInput.cpp" />
+    <ClCompile Include="source\MainGame.cpp" />
+    <ClCompile Include="source\Miscellaneous\MeshLoader.cpp" />
+    <ClCompile Include="source\Gameplay\Camera.cpp" />
+    <ClCompile Include="source\Rendering\NormalMesh.cpp" />
+    <ClCompile Include="source\Rendering\Shader.cpp" />
     <ClCompile Include="source\EntryPoint.cpp" />
+    <ClCompile Include="source\stb_image.cpp" />
+    <ClCompile Include="source\Rendering\Texture2D.cpp" />
+    <ClCompile Include="source\Rendering\VoxelMesh.cpp" />
+    <ClCompile Include="source\Miscellaneous\VoxelChunk.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\MeshLoader.h" />
-    <ClInclude Include="source\Camera.h" />
-    <ClInclude Include="source\NormalMesh.h" />
-    <ClInclude Include="source\Shader.h" />
+    <ClInclude Include="source\Miscellaneous\ChunkGenerator.h" />
+    <ClInclude Include="source\MainInput.h" />
+    <ClInclude Include="source\MainGame.h" />
+    <ClInclude Include="source\Miscellaneous\MeshLoader.h" />
+    <ClInclude Include="source\Gameplay\Camera.h" />
+    <ClInclude Include="source\Rendering\NormalMesh.h" />
+    <ClInclude Include="source\Rendering\Shader.h" />
+    <ClInclude Include="source\Rendering\Texture2D.h" />
+    <ClInclude Include="source\Rendering\VoxelMesh.h" />
+    <ClInclude Include="source\Miscellaneous\VoxelChunk.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="models\IcoSphere.json" />
     <None Include="models\monke.json" />
     <None Include="shaders\NormalShader.frag">
       <DeploymentContent>false</DeploymentContent>
@@ -190,6 +208,8 @@
     <None Include="shaders\NormalShader.vert">
       <DeploymentContent>false</DeploymentContent>
     </None>
+    <None Include="shaders\OpaqueVoxelShader.frag" />
+    <None Include="shaders\OpaqueVoxelShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

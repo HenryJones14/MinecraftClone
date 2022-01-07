@@ -16,7 +16,7 @@ void main()
 {
     gl_Position = projection * view * object * vec4(pos, 1.0);
 
-    Normal = normalize(nor);
+    Normal = normalize((object * vec4(nor, 1.0)).xyz - vec3(object[3].x, object[3].y, object[3].z));
     Color = clamp(col, 0, 1);
     UVs = uvs;
 }

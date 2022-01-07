@@ -18,30 +18,69 @@
     <ClCompile Include="source\EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\NormalMesh.cpp">
+    <ClCompile Include="source\Rendering\NormalMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Shader.cpp">
+    <ClCompile Include="source\Rendering\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Camera.cpp">
+    <ClCompile Include="source\Gameplay\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\MeshLoader.cpp">
+    <ClCompile Include="source\Miscellaneous\MeshLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Rendering\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MainGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MainInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Rendering\VoxelMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Miscellaneous\VoxelChunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Miscellaneous\ChunkGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\NormalMesh.h">
+    <ClInclude Include="source\Rendering\NormalMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Shader.h">
+    <ClInclude Include="source\Rendering\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Camera.h">
+    <ClInclude Include="source\Gameplay\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\MeshLoader.h">
+    <ClInclude Include="source\Miscellaneous\MeshLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Rendering\Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MainGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MainInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Rendering\VoxelMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Miscellaneous\VoxelChunk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Miscellaneous\ChunkGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,5 +88,8 @@
     <None Include="shaders\NormalShader.frag" />
     <None Include="shaders\NormalShader.vert" />
     <None Include="models\monke.json" />
+    <None Include="models\IcoSphere.json" />
+    <None Include="shaders\OpaqueVoxelShader.frag" />
+    <None Include="shaders\OpaqueVoxelShader.vert" />
   </ItemGroup>
 </Project>

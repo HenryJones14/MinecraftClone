@@ -7,23 +7,20 @@
 
 #include <iostream>
 
-#include "Shader.h";
-#include "NormalMesh.h";
-#include "Camera.h";
-
-void keyCallback(GLFWwindow*, int, int, int, int);
-
-float inx = 0, iny = 0, inz = 0, inya = 0, inpi = 0;
-
-int style = 0;
+#include "MainGame.h"
+#include "MainInput.h"
 
 int main(void)
 {
+    /* Create a window object */
     GLFWwindow* window;
 
-    /* Initialize the library */
+    /* Initialize the GLFW library */
     if (!glfwInit())
         return -1;
+
+    /* Change window hints to have anti-aliasing */
+    glfwWindowHint(GLFW_SAMPLES, 8);
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(1280, 720, "MinecraftClone", NULL, NULL);
@@ -36,165 +33,45 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    /* Initialize the GLEW library */
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
-        /* Problem: glewInit failed, something is seriously wrong. */
-        std::cout << "Error: " << glewGetErrorString(err) << "\n";
+
+        return -1;
     }
 
-    glfwSetKeyCallback(window, keyCallback);
+    /* Enable anti-aliasing */
+    glEnable(GL_MULTISAMPLE);
 
-    glClearColor(0.4921875f, 0.6640625f, 1, 1);
-    glClearColor(0, 0, 0, 1);
-    Shader MainShader = Shader("shaders/NormalShader.vert", "shaders/NormalShader.frag");
-    NormalMesh MainMesh = NormalMesh();
-    Camera MainCamera = Camera(16.0f / 9.0f, 90);
-    MainCamera.GlobalMoveCamera(1, 1, 1);
+    /* Set input callback function */
+    glfwSetKeyCallback(window, MainInput::UpdateInput);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glFrontFace(GL_CW);
+    // Start game
+    MainGame MainGameLoop = MainGame();
+    MainGameLoop.StartGame();
 
-    glEnable(GL_DEPTH_TEST);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        MainCamera.LocalMoveCamera(inx * 0.01, iny * 0.01, inz * 0.01);
-        MainCamera.LocalRotateCamera(inya, inpi);
-
-        MainShader.ActivateShader();
-        MainShader.SetMatrix4x4("object", glm::mat4(1.0f));
-        MainShader.SetMatrix4x4("view", MainCamera.GetViewMatrix());
-        MainShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
-
-        MainShader.SetInt("style", style);
-
-        MainMesh.RenderMesh();
+        // Update game
+        MainGameLoop.UpdateGame();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
+
+        /* Clear color and depth buffers */
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         /* Poll for and process events */
         glfwPollEvents();
     }
 
-    /* Deconstruct everything before exit */
+    // End game
+    MainGameLoop.EndGame();
+
+    /* Deconstruct everything and exit */
     glfwTerminate();
     return 0;
-}
-
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    // X
-    if (key == GLFW_KEY_D && action == GLFW_PRESS)
-    {
-        inx += 1;
-    }
-    else if (key == GLFW_KEY_D && action == GLFW_RELEASE)
-    {
-        inx -= 1;
-    }
-
-    if (key == GLFW_KEY_A && action == GLFW_PRESS)
-    {
-        inx -= 1;
-    }
-    else if (key == GLFW_KEY_A && action == GLFW_RELEASE)
-    {
-        inx += 1;
-    }
-
-    // Y
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-    {
-        iny += 1;
-    }
-    else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
-    {
-        iny -= 1;
-    }
-
-    if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
-    {
-        iny -= 1;
-    }
-    else if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
-    {
-        iny += 1;
-    }
-
-    // Z
-    if (key == GLFW_KEY_W && action == GLFW_PRESS)
-    {
-        inz += 1;
-    }
-    else if (key == GLFW_KEY_W && action == GLFW_RELEASE)
-    {
-        inz -= 1;
-    }
-
-    if (key == GLFW_KEY_S && action == GLFW_PRESS)
-    {
-        inz -= 1;
-    }
-    else if (key == GLFW_KEY_S && action == GLFW_RELEASE)
-    {
-        inz += 1;
-    }
-
-    // Yaw
-    if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-    {
-        inya += 1;
-    }
-    else if (key == GLFW_KEY_RIGHT && action == GLFW_RELEASE)
-    {
-        inya -= 1;
-    }
-
-    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-    {
-        inya -= 1;
-    }
-    else if (key == GLFW_KEY_LEFT && action == GLFW_RELEASE)
-    {
-        inya += 1;
-    }
-
-    // Pitch
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-    {
-        inpi += 1;
-    }
-    else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
-    {
-        inpi -= 1;
-    }
-
-    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-    {
-        inpi -= 1;
-    }
-    else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
-    {
-        inpi += 1;
-    }
-
-
-
-
-
-    if (key == GLFW_KEY_I && action == GLFW_PRESS)
-    {
-        style += 1;
-    }
-    if (key == GLFW_KEY_O && action == GLFW_PRESS)
-    {
-        style -= 1;
-    }
 }
