@@ -34,7 +34,7 @@ glm::mat4 Camera::GetProjectionMatrix()
 	return glm::perspective(glm::radians((float)fov), ratio, 0.01f, 100.0f) * glm::scale(glm::mat4(1), glm::vec3(-1, 1, 1));
 }
 
-void Camera::LocalMoveCamera(float MoveX, float MoveY, float MoveZ)
+void Camera::MoveCamera(float MoveX, float MoveY, float MoveZ)
 {
 	position -= rightdir * MoveX;
 	position += topdir * MoveY;
@@ -43,17 +43,25 @@ void Camera::LocalMoveCamera(float MoveX, float MoveY, float MoveZ)
 	UpdateVectors();
 }
 
-void Camera::GlobalMoveCamera(float MoveX, float MoveY, float MoveZ)
+void Camera::RotateCamera(float RotateYaw, float RotatePitch)
 {
-	position += glm::vec3(MoveX, MoveY, MoveZ);
+	yaw -= RotateYaw;
+	pitch = std::clamp(pitch + RotatePitch, -89.0f, 89.0f);
 
 	UpdateVectors();
 }
 
-void Camera::LocalRotateCamera(float RotateYaw, float RotatePitch)
+void Camera::SetCameraPosition(float MoveX, float MoveY, float MoveZ)
 {
-	yaw -= RotateYaw;
-	pitch = std::clamp(pitch + RotatePitch, -89.0f, 89.0f);
+	position = glm::vec3(MoveX, MoveY, MoveZ);
+
+	UpdateVectors();
+}
+
+void Camera::SetCameraRotation(float RotateYaw, float RotatePitch)
+{
+	yaw = RotateYaw;
+	pitch = std::clamp(RotatePitch, -89.0f, 89.0f);
 
 	UpdateVectors();
 }

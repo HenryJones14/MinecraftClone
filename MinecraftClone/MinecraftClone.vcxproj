@@ -175,8 +175,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Miscellaneous\ChunkGenerator.cpp" />
-    <ClCompile Include="source\MainInput.cpp" />
-    <ClCompile Include="source\MainGame.cpp" />
+    <ClCompile Include="source\InputManager.cpp" />
     <ClCompile Include="source\Miscellaneous\MeshLoader.cpp" />
     <ClCompile Include="source\Gameplay\Camera.cpp" />
     <ClCompile Include="source\Rendering\NormalMesh.cpp" />
@@ -189,8 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Miscellaneous\ChunkGenerator.h" />
-    <ClInclude Include="source\MainInput.h" />
-    <ClInclude Include="source\MainGame.h" />
+    <ClInclude Include="source\InputManager.h" />
     <ClInclude Include="source\Miscellaneous\MeshLoader.h" />
     <ClInclude Include="source\Gameplay\Camera.h" />
     <ClInclude Include="source\Rendering\NormalMesh.h" />

@@ -36,10 +36,7 @@
     <ClCompile Include="source\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\MainGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MainInput.cpp">
+    <ClCompile Include="source\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Rendering\VoxelMesh.cpp">
@@ -68,10 +65,7 @@
     <ClInclude Include="source\Rendering\Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\MainGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\MainInput.h">
+    <ClInclude Include="source\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Rendering\VoxelMesh.h">
