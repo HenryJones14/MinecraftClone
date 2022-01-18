@@ -103,22 +103,40 @@ int main(void)
     std::vector<Chunk*> VoxelChunks;
     Texture3D VoxelTexture = Texture3D(32, 32, BlockList::Textures);
 
-    for (int x = -2; x < 3; x++)
-    {
-        for (int y = -1; y < 1; y++)
-        {
-            for (int z = -2; z < 3; z++)
-            {
-                VoxelChunks.push_back(new Chunk(x, y, z));
-            }
-        }
-    }
+    int x = -4, y = -1, z = -4;
+    bool newchunk;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        newchunk = false;
+
+        if (x < 5)
+        {
+            x++;
+            newchunk = true;
+        }
+        else if (y < 1)
+        {
+            y++;
+            x = -4;
+            newchunk = true;
+        }
+        else if (z < 5)
+        {
+            z++;
+            x = -4;
+            y = -1;
+            newchunk = true;
+        }
+
+        if (newchunk)
+        {
+            VoxelChunks.push_back(new Chunk(x, y, z));
+        }
+
         // Update game
-        MainCamera.MoveCamera(InputManager::KeyboardMoveX * InputManager::DeltaTime * 5, InputManager::KeyboardMoveY * InputManager::DeltaTime * 5, InputManager::KeyboardMoveZ * InputManager::DeltaTime * 5);
+        MainCamera.MoveCamera(InputManager::KeyboardMoveX * InputManager::DeltaTime * 10, InputManager::KeyboardMoveY * InputManager::DeltaTime * 10, InputManager::KeyboardMoveZ * InputManager::DeltaTime * 10);
         MainCamera.RotateCamera(InputManager::MousePositionX * 0.04, InputManager::MousePositionY * 0.04);
 
 

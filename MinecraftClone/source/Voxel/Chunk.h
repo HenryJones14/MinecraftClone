@@ -12,8 +12,9 @@ class Chunk
 {
 public:
 	Chunk(int, int, int);
-	Chunk(unsigned int*, int, int);
 	~Chunk();
+	bool GenerationFinished;
+	bool ReadyToRender;
 
 	unsigned int* Blocks;
 	int PosX, PosY, PosZ;
@@ -21,6 +22,7 @@ public:
 	OpaqueVoxelMesh OpaqueMesh;
 
 	void Render();
+	static void Generate(Chunk*);
 
 	static int GetIndex(int, int, int);
 	//static unsigned char PackByte(bool*);

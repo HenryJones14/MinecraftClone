@@ -2,6 +2,8 @@
 #include "Voxel/ChunkGenerator.h"
 #include "Voxel/MeshGenerator.h"
 
+#include <thread>
+
 /*static unsigned char PackByte(bool* Information)
 {
     char Byte = 0;
@@ -24,25 +26,45 @@ Chunk::Chunk(int x, int y, int z)
 {
 	Blocks = new unsigned int[CHUNK_TOTAL_SIZE]{};
     PosX = x; PosY = y; PosZ = z;
+    GenerationFinished = false;
+    ReadyToRender = false;
 
+    std::thread GenerationThread = std::thread(Chunk::Generate, this);
+    GenerationThread.detach();
+}
+
+void Chunk::Generate(Chunk* Referance)
+{
     // generate chunk
-    ChunkGenerator::GenerateChunk(this);
+    ChunkGenerator::GenerateChunk(Referance);
 
     // generate mesh
-    MeshGenerator::GenerateMesh(this);
+    MeshGenerator::GenerateMesh(Referance);
 
-    OpaqueMesh.CreateMesh();
+    // mark finish
+    Referance->GenerationFinished = true;
 }
 
 void Chunk::Render()
 {
-    OpaqueMesh.RenderMesh();
+    if (GenerationFinished && ReadyToRender)
+    {
+        OpaqueMesh.RenderMesh();
+    }
+    else if (GenerationFinished)
+    {
+        OpaqueMesh.CreateMesh();
+        ReadyToRender = true;
+    }
 }
 
 Chunk::~Chunk()
 {
 	delete Blocks;
-    OpaqueMesh.DestroyMesh();
+    if (GenerationFinished && ReadyToRender)
+    {
+        OpaqueMesh.DestroyMesh();
+    }
 }
 
 int Chunk::GetIndex(int x, int y, int z)
