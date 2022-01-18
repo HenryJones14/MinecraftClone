@@ -1,0 +1,5 @@
+ (arctic tundra)         (taiga)        (mountains)
+
+(temperate forest) (temperate grassland) (desert)
+
+  (rain forest)          (savana)      (hot desert)

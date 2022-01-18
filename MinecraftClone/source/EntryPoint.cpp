@@ -6,15 +6,21 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
+#include <string>
 
 #include "InputManager.h"
 
 #include "Rendering/Shader.h"
 #include "Rendering/NormalMesh.h"
-#include "Rendering/VoxelMesh.h"
 #include "Rendering/Texture2D.h"
+#include "Rendering/Texture3D.h"
 
 #include "Gameplay/Camera.h"
+#include "Voxel/Chunk.h"
+
+#include "Noise/SimplexNoise.h"
+#include "Voxel/BlockList.h"
 
 int main(void)
 {
@@ -82,6 +88,11 @@ int main(void)
 
     glEnable(GL_DEPTH_TEST);
 
+    for (size_t i = 0; i < 256; i++)
+    {
+        std::cout << i << ": <" << char(i) << ">" << std::endl;
+    }
+
     Camera MainCamera = Camera(16.0f / 9.0f, 90);
 
     Shader MainShader = Shader();
@@ -89,35 +100,53 @@ int main(void)
     Texture2D MainTexture = Texture2D();
 
     Shader VoxelShader = Shader("shaders/OpaqueVoxelShader.vert", "shaders/OpaqueVoxelShader.frag");
-    VoxelMesh VoxelChunkMesh = VoxelMesh();
-    Texture2D VoxelTexture = Texture2D("textures/furnace.png");
+    std::vector<Chunk*> VoxelChunks;
+    Texture3D VoxelTexture = Texture3D(32, 32, BlockList::Textures);
 
+    for (int x = -2; x < 3; x++)
+    {
+        for (int y = -1; y < 1; y++)
+        {
+            for (int z = -2; z < 3; z++)
+            {
+                VoxelChunks.push_back(new Chunk(x, y, z));
+            }
+        }
+    }
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         // Update game
-        MainCamera.MoveCamera(InputManager::KeyboardMoveX * InputManager::DeltaTime, InputManager::KeyboardMoveY * InputManager::DeltaTime, InputManager::KeyboardMoveZ * InputManager::DeltaTime);
-        MainCamera.RotateCamera(InputManager::MousePositionX * 0.03, InputManager::MousePositionY * 0.03);
+        MainCamera.MoveCamera(InputManager::KeyboardMoveX * InputManager::DeltaTime * 5, InputManager::KeyboardMoveY * InputManager::DeltaTime * 5, InputManager::KeyboardMoveZ * InputManager::DeltaTime * 5);
+        MainCamera.RotateCamera(InputManager::MousePositionX * 0.04, InputManager::MousePositionY * 0.04);
+
+
 
         MainShader.ActivateShader();
         MainTexture.ActivateTexture();
 
-        MainShader.SetMatrix4x4("object", glm::mat4(1));
         MainShader.SetMatrix4x4("view", MainCamera.GetViewMatrix());
         MainShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
 
+        MainShader.SetMatrix4x4("object", glm::mat4(1));
         MainMesh.RenderMesh();
+
 
 
         VoxelShader.ActivateShader();
         VoxelTexture.ActivateTexture();
 
-        VoxelShader.SetMatrix4x4("object", glm::translate(glm::mat4(1), glm::vec3(1, 1, 1)));
         VoxelShader.SetMatrix4x4("view", MainCamera.GetViewMatrix());
         VoxelShader.SetMatrix4x4("projection", MainCamera.GetProjectionMatrix());
 
-        VoxelChunkMesh.RenderMesh();
+        for (int i = 0; i < VoxelChunks.size(); i++)
+        {
+            VoxelShader.SetMatrix4x4("object", glm::translate(glm::mat4(1), glm::vec3(VoxelChunks[i]->PosX * CHUNK_X_SIZE, VoxelChunks[i]->PosY * CHUNK_Y_SIZE, VoxelChunks[i]->PosZ * CHUNK_Z_SIZE)));
+            VoxelChunks[i]->Render();
+        }
+
+        //std::cout << (int)(1 / InputManager::DeltaTime) << std::endl;
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -128,10 +157,19 @@ int main(void)
         /* Poll for and process events */
         glfwPollEvents();
         InputManager::Reset();
-        //std::cout << (int)(1 / InputManager::DeltaTime) << std::endl;
+
+        /* Close window if "Escape" is pressed*/
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+        {
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        }
     }
 
     // End game
+    for (int i = 0; i < VoxelChunks.size(); i++)
+    {
+        delete VoxelChunks[i];
+    }
 
     /* Deconstruct everything and exit */
     glfwTerminate();

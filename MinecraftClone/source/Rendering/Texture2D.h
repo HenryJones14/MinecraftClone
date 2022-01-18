@@ -14,5 +14,6 @@ public:
 
 private:
 	unsigned int TextureID;
+	void InitializeTexture(unsigned char*, int, int, std::string);
 };
 

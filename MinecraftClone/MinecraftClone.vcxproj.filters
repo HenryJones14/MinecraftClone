@@ -39,13 +39,22 @@
     <ClCompile Include="source\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Rendering\VoxelMesh.cpp">
+    <ClCompile Include="source\Rendering\Voxel\OpaqueVoxelMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Miscellaneous\VoxelChunk.cpp">
+    <ClCompile Include="source\Voxel\Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Miscellaneous\ChunkGenerator.cpp">
+    <ClCompile Include="source\Voxel\ChunkGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Noise\SimplexNoise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Voxel\MeshGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Rendering\Texture3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,13 +77,25 @@
     <ClInclude Include="source\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Rendering\VoxelMesh.h">
+    <ClInclude Include="source\Rendering\Voxel\OpaqueVoxelMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Miscellaneous\VoxelChunk.h">
+    <ClInclude Include="source\Voxel\Chunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Miscellaneous\ChunkGenerator.h">
+    <ClInclude Include="source\Voxel\ChunkGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Noise\SimplexNoise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Voxel\MeshGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Rendering\Texture3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Voxel\BlockList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

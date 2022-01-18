@@ -174,28 +174,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Miscellaneous\ChunkGenerator.cpp" />
+    <ClCompile Include="source\Voxel\MeshGenerator.cpp" />
+    <ClCompile Include="source\Voxel\ChunkGenerator.cpp" />
     <ClCompile Include="source\InputManager.cpp" />
     <ClCompile Include="source\Miscellaneous\MeshLoader.cpp" />
     <ClCompile Include="source\Gameplay\Camera.cpp" />
+    <ClCompile Include="source\Noise\SimplexNoise.cpp" />
     <ClCompile Include="source\Rendering\NormalMesh.cpp" />
     <ClCompile Include="source\Rendering\Shader.cpp" />
     <ClCompile Include="source\EntryPoint.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
     <ClCompile Include="source\Rendering\Texture2D.cpp" />
-    <ClCompile Include="source\Rendering\VoxelMesh.cpp" />
-    <ClCompile Include="source\Miscellaneous\VoxelChunk.cpp" />
+    <ClCompile Include="source\Rendering\Voxel\OpaqueVoxelMesh.cpp" />
+    <ClCompile Include="source\Voxel\Chunk.cpp" />
+    <ClCompile Include="source\Rendering\Texture3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Miscellaneous\ChunkGenerator.h" />
+    <ClInclude Include="source\Voxel\BlockList.h" />
+    <ClInclude Include="source\Voxel\MeshGenerator.h" />
+    <ClInclude Include="source\Voxel\ChunkGenerator.h" />
     <ClInclude Include="source\InputManager.h" />
     <ClInclude Include="source\Miscellaneous\MeshLoader.h" />
     <ClInclude Include="source\Gameplay\Camera.h" />
+    <ClInclude Include="source\Noise\SimplexNoise.h" />
     <ClInclude Include="source\Rendering\NormalMesh.h" />
     <ClInclude Include="source\Rendering\Shader.h" />
     <ClInclude Include="source\Rendering\Texture2D.h" />
-    <ClInclude Include="source\Rendering\VoxelMesh.h" />
-    <ClInclude Include="source\Miscellaneous\VoxelChunk.h" />
+    <ClInclude Include="source\Rendering\Voxel\OpaqueVoxelMesh.h" />
+    <ClInclude Include="source\Voxel\Chunk.h" />
+    <ClInclude Include="source\Rendering\Texture3D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="models\IcoSphere.json" />

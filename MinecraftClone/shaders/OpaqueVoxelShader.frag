@@ -1,21 +1,19 @@
 #version 330 core
 out vec4 FragColor;
 
-in vec2 UV;
-flat in int TEX;
+in vec2 Lighting;
+in vec3 UV;
 
-uniform sampler2D texture0;
-
-vec2 offset[4] = vec2[4]( vec2(0, 1), vec2(1, 0), vec2(0, 0), vec2(1, 1) );
+uniform sampler2DArray texture0;
 
 void main()
 {
-    vec4 col = texture(texture0, (UV + offset[TEX]) * 0.5);
+    vec4 col = texture(texture0, UV);
 
     if (col.a == 0)
     {
         discard;
     }
 
-    FragColor = vec4(col.rgb, col.a);
+    FragColor = vec4(col.rgb * Lighting.x * Lighting.y, col.a);
 }
