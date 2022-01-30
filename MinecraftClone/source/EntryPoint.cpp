@@ -22,6 +22,10 @@
 #include "Noise/SimplexNoise.h"
 #include "Voxel/BlockList.h"
 
+#define SizeX 5
+#define SizeY 2
+#define SizeZ 5
+
 int main(void)
 {
     /* Create a window object */
@@ -103,7 +107,7 @@ int main(void)
     std::vector<Chunk*> VoxelChunks;
     Texture3D VoxelTexture = Texture3D(32, 32, BlockList::Textures);
 
-    int x = -4, y = -1, z = -4;
+    int x = -SizeX, y = -SizeY, z = -SizeZ;
     bool newchunk;
 
     /* Loop until the user closes the window */
@@ -111,22 +115,22 @@ int main(void)
     {
         newchunk = false;
 
-        if (x < 5)
+        if (x < SizeX - 1)
         {
             x++;
             newchunk = true;
         }
-        else if (y < 1)
+        else if (y < SizeY - 1)
         {
             y++;
-            x = -4;
+            x = -SizeX;
             newchunk = true;
         }
-        else if (z < 5)
+        else if (z < SizeZ - 1)
         {
             z++;
-            x = -4;
-            y = -1;
+            x = -SizeX;
+            y = -SizeY;
             newchunk = true;
         }
 

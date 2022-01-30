@@ -57,12 +57,16 @@ public:
 		"textures/engine/normal/Front.png",
 		"textures/engine/normal/Back.png",
 
-		"textures/blocks/Grass_Right.png",
-		"textures/blocks/Grass_Top.png",
+		"textures/blocks/Grass/Right.png",
+		"textures/blocks/Grass/Top.png",
 
-		"textures/blocks/Dirt_Right.png",
+		"textures/blocks/Dirt/Right.png",
 
-		"textures/blocks/Stone_Right.png",
+		"textures/blocks/Stone/Right.png",
+
+		"textures/blocks/Diamond/Right.png",
+
+		"textures/blocks/Bedrock/Right.png",
 	};
 
 	inline static const std::vector<BlockInfo> Blocks =
@@ -81,5 +85,11 @@ public:
 
 		// Stone
 		BlockInfo(BlockRenderMode::Opaque, 9, 9, 9, 9, 9, 9),
+
+		// Diamond
+		BlockInfo(BlockRenderMode::Opaque, 10, 10, 10, 10, 10, 10),
+
+		// Bedrock
+		BlockInfo(BlockRenderMode::Opaque, 11, 11, 11, 11, 11, 11),
 	};
 };
